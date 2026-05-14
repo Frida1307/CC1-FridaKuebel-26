@@ -1,0 +1,91 @@
+body {
+    display: flex;
+	flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    font-family: system-ui, "Segoe UI", sans-serif;
+    background: radial-gradient(circle at top, #2b2f77, #050816);
+    color: #f5f5f5;
+}
+
+#statusDisplay {
+	margin-bottom: 1.5rem;
+	color: #a5f3fc;
+	font-size: 1.1rem;
+	font-weight: 550;
+}
+
+.controls {
+	display: flex;
+	gap: 1.5rem;
+	padding: 1.2rem 1.8rem;
+	border-radius: 999px;
+	background: rgba(255, 255, 255, 0.10);
+	box-shadow:
+		0 20px 40px rgba(0, 0, 0, 0.55),
+		0 0 0 1px rgba(255, 255, 255, 0.18);
+	backdrop-filter: blur(22px);
+	-webkit-backdrop-filter: blur(22px);
+}
+
+button {
+	padding: 0.9rem 1.8rem;
+	border-radius: 999px;
+	border: 1px solid rgba(255, 255, 255, 0.5);
+	cursor: pointer;
+	font-weight: 600;
+	background: radial-gradient(circle at top,
+		rgba(255, 255, 255, 0.6),
+		rgba(255, 255, 255, 0.12)
+	);
+
+	box-shadow:
+		0 12px 28px rgba(15, 23, 42, 0.55),
+		0 0 0 1px rgba(255, 255, 255, 0.45);
+
+	color: rgba(15, 23, 42, 0.8);
+
+	backdrop-filter: blur(18px);
+	-webkit-backdrop-filter: blur(18px);
+
+	transition:
+		transform 0.12s ease,
+		box-shadow 0.12s ease,
+		background 0.16s ease;
+
+	text-shadow:
+		0 1px 0 rgba(255, 255, 255, 0.85),
+		0 -1px 0 rgba(0, 0, 0, 0.25);
+}
+
+button:hover {
+	transform: translateY(-1px);
+	box-shadow:
+		0 18px 34px rgba(15, 23, 42, 0.7),
+		0 0 0 1px rgba(255, 255, 255, 0.8);
+	background: radial-gradient(circle at top,
+		rgba(255, 255, 255, 0.9),
+		rgba(255, 255, 255, 0.25)
+	);
+}
+
+button:active {
+	transform: translateY(1px) scale(0.97);
+	box-shadow:
+		0 8px 18px rgba(15, 23, 42, 0.75),
+		0 0 0 1px rgba(148, 163, 184, 0.8);
+}
+
+.licht{
+	color: #a81c1c;
+}
+
+.mode{
+	color: #b36703;
+}
+
+.denseness{
+	color: #1a60a1;
+}

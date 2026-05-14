@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Lampe</title>
+	<link rel="stylesheet" href="lampe-style.css">
+	<script src="lampe-script.js" defer></script>
+</head>
+<body>
+	<h1>Das ist eine Lampe:</h1>
+    <div id="statusDisplay">Licht aus</div>
+
+	<div class="controls">
+		<button class="licht" onclick="lichtFunktion()">⏻</button>
+		<button class="mode" onclick="modusFunktion()">Modus</button>
+		<button class="denseness"
+	        onmousedown="densityFunktion(event)"
+	        onmouseup="stopDensity()"
+	        onmouseleave="stopDensity()"
+	        oncontextmenu="return false;">
+	        +/-
+        </button>
+	</div>
+</body>
+</html>
