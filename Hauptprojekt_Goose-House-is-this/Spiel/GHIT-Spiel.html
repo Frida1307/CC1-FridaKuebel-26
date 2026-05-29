@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="GHIT-Spiel.css">
+    <script src="GHIT-Spiel.js" defer></script>
+    <title>Goose House is this?</title>
+</head>
+<body>
+    <div class="Positionierer">
+        <div id="hintergrund">
+            <div id="hauptbereich">
+
+                <!-- Auswahlbereich -->
+                <div class="auswahl">
+                    <div id="auswahlFormen">
+                        <img id="auswahlFormenBild1">
+                        <img id="auswahlFormenBild2">
+                        <img id="auswahlFormenBild3">
+                        <img id="auswahlFormenBild4">
+                    </div>
+                    <div id="auswahlFarben">
+                        <img id="auswahlFarbenBild1">
+                        <img id="auswahlFarbenBild2">
+                        <img id="auswahlFarbenBild3">
+                        <img id="auswahlFarbenBild4">
+                    </div>
+                </div>
+                <!-- Auswahl-Pfeile --> 
+                <button id="auswahlLinksKnopf" class="pfeil pfeil-links"></button>
+                <button id="auswahlRechtsKnopf" class="pfeil pfeil-rechts"></button>
+
+                <div id="bildschirm">
+                    <div id="textFeld">
+                        <div class="gans"></div>
+                    </div>
+                    <div id="platzierbereich"></div>
+
+                    <button id="bildschirmLinksKnopf" class="pfeil pfeil-links"></button>
+                    <button id="bildschirmRechtsKnopf" class="pfeil pfeil-rechts"></button>
+                </div>
+            </div>
+
+            <!-- Anzeige: Welche Knöpfe werden gedrückt -->
+            <div class="uebersichtKnoepfe">
+                <div id="enter-gedrueckt"></div>
+                <div id="oben-gedrueckt"></div>
+                <div id="unten-gedrueckt"></div>
+                <div id="rechts-gedrueckt"></div>
+                <div id="links-gedrueckt"></div>
+            </div>
+
+            <div id="einstellung"></div>
+            <div class="hilfe"></div>
+        </div>
+    </div>
+</body>
+</html>

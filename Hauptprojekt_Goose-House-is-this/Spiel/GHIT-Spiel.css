@@ -1,0 +1,144 @@
+body {
+  margin: 0;
+  background-color: #000000;
+}
+
+.Positionierer {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#hintergrund {
+  position: relative;
+  aspect-ratio: 59 / 41;
+  width: min(100vw, 100vh * 59 / 41);
+  background-image: url("Bilder/Hintergrund.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  overflow: hidden;
+}
+
+
+/*Anzeige welche Knöpfe gedrückt werden:*/
+.uebersichtKnoepfe {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.uebersichtKnoepfe > div {
+  position: absolute;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  display: none;
+  width: 32%;
+  height: 32%;
+  right: 10.15%;
+  bottom: -8.545%;
+}
+
+#enter-gedrueckt {
+  background-image: url("Bilder/Anzeige/ok-gedrueckt.png");
+}
+#oben-gedrueckt {
+  background-image: url("Bilder/Anzeige/oben-gedrueckt.png");
+}
+#unten-gedrueckt {
+  background-image: url("Bilder/Anzeige/unten-gedrueckt.png");
+}
+#links-gedrueckt {
+  background-image: url("Bilder/Anzeige/links-gedrueckt.png");
+}
+#rechts-gedrueckt {
+  background-image: url("Bilder/Anzeige/rechts-gedrueckt.png");
+}
+
+/*Pfeile (generell):*/
+.pfeil {
+  position: absolute;
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.pfeil-links{
+  background-image: url("Bilder/Pfeile/Pfeil-Links.png");
+}
+.pfeil-links:hover,
+.pfeil-links:focus-visible {
+  background-image: url("Bilder/Pfeile/Pfeil-Links-ausgewaehlt.png");
+}
+
+
+.pfeil-rechts{
+  background-image: url("Bilder/Pfeile/Pfeil-Rechts.png");
+}
+.pfeil-rechts:hover,
+.pfeil-rechts:focus-visible {
+  background-image: url("Bilder/Pfeile/Pfeil-Rechts-ausgewaehlt.png");
+}
+
+/*Pfeile (für Auswahlfeld):*/
+#auswahlLinksKnopf {
+  width: 4.5%;
+  height: 4.5%;
+  left: 6%;
+  top: 40.35%;
+}
+
+#auswahlRechtsKnopf {
+  width: 4.5%;
+  height: 4.5%;
+  left: 34%;
+  top: 40.35%;
+}
+
+/*Auswahlbereiche*/
+.auswahl {
+  display: flex;
+  flex-direction: column;
+  margin: 4.3% 10.3%;
+  width: 24.5%;
+  height: auto;
+  gap: 10%;
+}
+
+#auswahlFormen,
+#auswahlFarben {
+  display: grid;  
+  grid-template-columns: repeat(2, 1fr);
+}
+
+#auswahlFormen img,
+#auswahlFarben img {
+  width: 98%;
+  height: 98%;
+  object-fit: contain;
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+
+/*Pfeile (für Bildschirm):*/
+#bildschirmLinksKnopf {
+  width: 5.5%;
+  height: 5.5%;
+  right: 57%;
+  top: 40.35%;
+}
+
+#bildschirmRechtsKnopf {
+  width: 5.5%;
+  height: 5.5%;
+  right: 8.5%;
+  top: 40.35%;
+}
