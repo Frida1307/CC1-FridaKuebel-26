@@ -494,9 +494,17 @@ auswahlfeldFormen.forEach((feld, i) => {
         const kategorie = getKategorie(formIndex);
         if (!kategorie) return;
 
-        ausgewaehlteFormProKategorie[kategorie]  = formIndex;
+        const umrissGewaeht = ausgewaehlteFormProKategorie.umriss !== null;
+        const istUmriss = (kategorie === "umriss");
+
+        if (!istUmriss && !umrissGewaeht) {
+            console.log("Erst einen Umriss wählen, bevor Fenster/Tür/Fassade/Garten gesetzt werden.");
+            return;
+        }
+
+        ausgewaehlteFormProKategorie[kategorie] = formIndex;
         ausgewaehlteFarbeProKategorie[kategorie] = AUSWAHL_LEER;
-        farbSlotProKategorie[kategorie]          = null;
+        farbSlotProKategorie[kategorie] = null;
 
         const bildPfad = nehmeHausBild(formIndex, 0);
         if (!bildPfad) return;
@@ -525,6 +533,12 @@ auswahlfeldFarben.forEach((feld, i) => {
     feld.addEventListener("click", () => {
         const seitenKat = getSeitenKategorie();
         if (!seitenKat) return;
+
+        const umrissGewaeht = ausgewaehlteFormProKategorie.umriss !== null;
+        if (!umrissGewaeht && seitenKat !== "umriss") {
+            console.log("Erst einen Umriss wählen, bevor Farben für andere Teile gesetzt werden.");
+            return;
+        }
 
         if (seitenKat === "garten") {
             console.log("Garten hat keine Farben, Farbklick wird ignoriert.");

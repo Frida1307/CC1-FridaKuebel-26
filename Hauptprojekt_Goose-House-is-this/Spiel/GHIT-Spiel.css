@@ -227,3 +227,26 @@ body {
   top: 50%;
   transform: translateY(-50%);
 }
+
+#text-feld {
+  position: absolute;
+  width: 70%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+  z-index: 2;
+
+}
+
+#text-feld img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+#text-feld .gans {
+  position: absolute;
+  left: 10%;
+  bottom: 20%;
+}
