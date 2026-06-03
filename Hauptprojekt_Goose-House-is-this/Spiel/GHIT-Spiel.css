@@ -3,7 +3,7 @@ body {
   background-color: #000000;
 }
 
-.Positionierer {
+.positionierer {
   width: 100vw;
   height: 100vh;
   display: flex;
@@ -12,10 +12,10 @@ body {
 }
 
 #hintergrund {
-  --hintergrundGroesse: min(100vw, 100vh * 59 / 41);
+  --hintergrund-groesse: min(100vw, 100vh * 59 / 41);
   position: relative;
   aspect-ratio: 59 / 41;
-  width: var(--hintergrundGroesse);
+  width: var(--hintergrund-groesse);
   background-image: url("Bilder/Hintergrund.png");
   background-size: contain;
   background-repeat: no-repeat;
@@ -23,143 +23,14 @@ body {
   overflow: hidden;
 }
 
-
-/*Pfeile (generell):*/
-.pfeil {
-  position: absolute;
-  background-color: transparent;
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-}
-
-.pfeil-links{
-  background-image: url("Bilder/Pfeile/Pfeil-Links.png");
-}
-.pfeil-links:hover,
-.pfeil-links:focus-visible {
-  background-image: url("Bilder/Pfeile/Pfeil-Links-ausgewaehlt.png");
-}
-
-
-.pfeil-rechts{
-  background-image: url("Bilder/Pfeile/Pfeil-Rechts.png");
-}
-.pfeil-rechts:hover,
-.pfeil-rechts:focus-visible {
-  background-image: url("Bilder/Pfeile/Pfeil-Rechts-ausgewaehlt.png");
-}
-
-/*-----AUSWAHLBEREICH------*/
-
-/*Auswahlbereiche*/
-.auswahl {
-  display: flex;
-  flex-direction: column;
-  margin: 4.3% 10.3%;
-  width: 24.5%;
-  height: auto;
-  gap: calc(var(--hintergrundGroesse) * 0.037);
-}
-
-#auswahlFormen,
-#auswahlFarben {
-  display: grid;  
-  grid-template-columns: repeat(2, 1fr);
-}
-
-.auswahlFeld {
-  position: relative;
-}
-
-#auswahlFormen img,
-#auswahlFarben img {
-  width: 98%;
-  height: 98%;
-  object-fit: contain;
-  display: block;
-}
-
-
-/*makiert/ausgewählt unsichtbar:*/
-.auswahlMarkiert,
-.auswahlAusgewaehlt{
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  pointer-events: none;
-}
-
-/*Eine Auswahl makiert:*/
-.auswahlFeld:hover .auswahlMarkiert{
-  opacity: 1;
-}
-
-/*Eine Auswahl ausgewählt:*/
-.auswahlFeld.formAktiv .auswahlAusgewaehlt,
-.auswahlFeld.farbeAktiv .auswahlAusgewaehlt{
-  opacity: 1;
-  cursor: pointer;
-}
-
-
-/*Pfeile (für Auswahlfeld):*/
-#auswahlLinksKnopf {
-  width: 4.5%;
-  height: 4.5%;
-  left: 6%;
-  top: 40.35%;
-}
-
-#auswahlRechtsKnopf {
-  width: 4.5%;
-  height: 4.5%;
-  left: 34%;
-  top: 40.35%;
-}
-
-/*Bildschirm*/
-#bildschirm{
-  position: absolute;
-  object-fit: contain;
-  display: flex;
-  height: 77.4%;
-  width: 77.1%;
-  left: 37.83%;
-  top: 3.812%;
-}
-
-/*Pfeile (für Bildschirm):*/
-#bildschirmLinksKnopf {
-  width: 6.5%;
-  height: 6.5%;
-  left: -1%;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-#bildschirmRechtsKnopf {
-  width: 6.5%;
-  height: 6.5%;
-  left: 64%;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-
-
-
-/*Anzeige welche Knöpfe gedrückt werden:*/
-.uebersichtKnoepfe {
+/* Anzeige: welche Knöpfe gedrückt werden */
+.uebersicht-knoepfe {
   position: absolute;
   inset: 0;
   pointer-events: none;
 }
 
-.uebersichtKnoepfe > div {
+.uebersicht-knoepfe > div {
   position: absolute;
   background-repeat: no-repeat;
   background-size: contain;
@@ -187,8 +58,9 @@ body {
   background-image: url("Bilder/Anzeige/rechts-gedrueckt.png");
 }
 
-/*Hilfe und Einstellung*/
-.eintellungsKnoepfe{
+/* Basis für Icon-Buttons (Einstellungen + Pfeile) */
+.einstellungs-knoepfe,
+.pfeil {
   position: absolute;
   background-color: transparent;
   background-repeat: no-repeat;
@@ -199,7 +71,8 @@ body {
   cursor: pointer;
 }
 
-#hilfe{
+/* Hilfe und Einstellung */
+#hilfe {
   background-image: url("Bilder/Einstellung/Hilfe.png");
   right: 2.7%;
   bottom: 3%;
@@ -211,8 +84,7 @@ body {
   background-image: url("Bilder/Einstellung/Hilfe-gedrueckt.png");
 }
 
-
-#einstellung{
+#einstellung {
   background-image: url("Bilder/Einstellung/Einstellung.png");
   right: 0.2%;
   bottom: -3.2%;
@@ -224,3 +96,134 @@ body {
   background-image: url("Bilder/Einstellung/Einstellung-gedrueckt.png");
 }
 
+/* Pfeile (generell) */
+.pfeil-links {
+  background-image: url("Bilder/Pfeile/Pfeil-Links.png");
+}
+.pfeil-links:hover,
+.pfeil-links:focus-visible {
+  background-image: url("Bilder/Pfeile/Pfeil-Links-ausgewaehlt.png");
+}
+
+.pfeil-rechts {
+  background-image: url("Bilder/Pfeile/Pfeil-Rechts.png");
+}
+.pfeil-rechts:hover,
+.pfeil-rechts:focus-visible {
+  background-image: url("Bilder/Pfeile/Pfeil-Rechts-ausgewaehlt.png");
+}
+
+/* ----- AUSWAHLBEREICH ----- */
+
+/* Auswahlbereiche */
+.auswahl {
+  display: flex;
+  flex-direction: column;
+  margin: 4.3% 10.3%;
+  width: 24.5%;
+  height: auto;
+  gap: calc(var(--hintergrund-groesse) * 0.037);
+}
+
+#auswahl-formen,
+#auswahl-farben {
+  display: grid;  
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.auswahl-feld {
+  position: relative;
+}
+
+#auswahl-formen img,
+#auswahl-farben img {
+  width: 98%;
+  height: 98%;
+  object-fit: contain;
+  display: block;
+}
+
+/* markiert / ausgewählt unsichtbar */
+.auswahl-markiert,
+.auswahl-ausgewaehlt {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Eine Auswahl markiert (hover) */
+.auswahl-feld:hover .auswahl-markiert {
+  opacity: 1;
+}
+
+/* Eine Auswahl ausgewählt */
+.auswahl-feld.form-aktiv .auswahl-ausgewaehlt,
+.auswahl-feld.farbe-aktiv .auswahl-ausgewaehlt {
+  opacity: 1;
+  cursor: pointer;
+}
+
+/* Pfeile (für Auswahlfeld) */
+#auswahl-links-knopf {
+  width: 4.5%;
+  height: 4.5%;
+  left: 6%;
+  top: 40.35%;
+}
+
+#auswahl-rechts-knopf {
+  width: 4.5%;
+  height: 4.5%;
+  left: 34%;
+  top: 40.35%;
+}
+
+/* ----- BILDSCHIRM ----- */
+#bildschirm-positionierer {
+  position: absolute;
+  height: 77.4%;
+  width: 77.1%;
+  left: 37.83%;
+  top: 3.812%;
+}
+
+#bildschirm {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+
+/* Platzierung */
+#platzierbereich {
+  position: absolute;
+  width: 70%;
+  aspect-ratio: 1 / 1;  
+}
+
+#platzierbereich img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+/* Pfeile (für Bildschirm) */
+#bildschirm-links-knopf {
+  width: 6.5%;
+  height: 6.5%;
+  left: -1%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+#bildschirm-rechts-knopf {
+  width: 6.5%;
+  height: 6.5%;
+  left: 64%;
+  top: 50%;
+  transform: translateY(-50%);
+}
