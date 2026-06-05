@@ -44,8 +44,8 @@ const FORM_BEREICHE = [
     { min: AUSWAHL_GARTEN_RANKEN,   max: AUSWAHL_GARTEN_FROSCH,   kategorie: "garten" },
 ];
 
-// Farb-Mapping pro Kategorie (Block-Index in haus[])
-const FARB_MAPPING = {
+// Farb-Varianten pro Kategorie (Block-Index in hausBilder[])
+const FARB_VARIANTEN_PRO_KATEGORIE = {
     umriss: {
         [AUSWAHL_GRUEN]: 1,
         [AUSWAHL_ROT]: 2,
@@ -72,41 +72,14 @@ const FARB_MAPPING = {
     },
 };
 
-// Welche Farben pro Seite angezeigt werden
+// Welche Farben pro Auswahl-Seite angezeigt werden
 const farbGruppen = [
-    [AUSWAHL_GRUEN, AUSWAHL_ROT, AUSWAHL_GELB, AUSWAHL_BLAU],
-    [AUSWAHL_WEISS, AUSWAHL_GELB, AUSWAHL_BRAUN, AUSWAHL_SCHWARZ],
-    [AUSWAHL_WEISS, AUSWAHL_ROT, AUSWAHL_BRAUN, AUSWAHL_SCHWARZ],
-    [AUSWAHL_WEISS, AUSWAHL_ROT, AUSWAHL_BLAU, AUSWAHL_SCHWARZ],
-    [AUSWAHL_LEER, AUSWAHL_LEER, AUSWAHL_LEER, AUSWAHL_LEER]
+    [AUSWAHL_GRUEN, AUSWAHL_ROT, AUSWAHL_GELB, AUSWAHL_BLAU], // Umriss
+    [AUSWAHL_WEISS, AUSWAHL_GELB, AUSWAHL_BRAUN, AUSWAHL_SCHWARZ], // Fenster
+    [AUSWAHL_WEISS, AUSWAHL_ROT, AUSWAHL_BRAUN, AUSWAHL_SCHWARZ], // Tür
+    [AUSWAHL_WEISS, AUSWAHL_ROT, AUSWAHL_BLAU, AUSWAHL_SCHWARZ], // Fassade
+    [AUSWAHL_LEER, AUSWAHL_LEER, AUSWAHL_LEER, AUSWAHL_LEER] // Garten
 ];
-
-// Zustand: ausgewählte Form pro Kategorie
-const ausgewaehlteFormProKategorie = {
-    umriss: null,
-    fenster: null,
-    tuer: null,
-    fassade: null,
-    garten: null
-};
-
-// Zustand ausgewählte Farbe pro Kategorie
-const ausgewaehlteFarbeProKategorie = {
-    umriss: AUSWAHL_LEER,
-    fenster: AUSWAHL_LEER,
-    tuer: AUSWAHL_LEER,
-    fassade: AUSWAHL_LEER,
-    garten: AUSWAHL_LEER
-};
-
-// Welcher Farb-Slot pro Kategorie gerade markiert ist
-const farbSlotProKategorie = {
-    umriss: null,
-    fenster: null,
-    tuer: null,
-    fassade: null,
-    garten: null
-};
 
 // ---- BILDER ----
 // Auswahl-Formen:
@@ -180,15 +153,19 @@ const auswahlFarbenBilder = [
 // Auswahl-Farbe (ausgewählt):
 const auswahlFarbeAusgewaehltesBild = "Bilder/Auswahl/Auswahl-Farben/Ausgewaehlte-Farbauswahl.png";
 
-// Hintergrund der Häuser
-const hausHintergrund = [
-    "Bilder/Hintergrund/Goose-Hintergrund.png",
-    "Bilder/Hintergrund/Goose-Hintergrund.png",
-    "Bilder/Hintergrund/Goose-Hintergrund.png",
-    "Bilder/Hintergrund/Goose-Hintergrund.png",
+// Hintergrund der Häuser – nur ein Bild
+const hintergrundBild = "Bilder/Hintergrund/Goose-Hintergrund.png";
+
+// Gänse
+const gaenseBilder = [
+    "Bilder/Gaense/Braenda.png",
+    "Bilder/Gaense/Ken.png",
+    "Bilder/Gaense/Tav.png",
+    "Bilder/Gaense/Goose.png",
 ];
 
-const haus = [
+// Häuser-Assets
+const hausBilder = [
     // --- UMRISS ---
     // QUADRAT (0–4)
     "Bilder/Haeuser/Umriss/Quadrat/Quadrat-farblos.png",
@@ -316,19 +293,72 @@ const haus = [
     "Bilder/Haeuser/Garten/Garten-Frosch.png",
 ];
 
+// Häuser-Zustände. Ein Haus pro Seite
+const leererFormzustand = () => ({
+    umriss: null,
+    fenster: null,
+    tuer: null,
+    fassade: null,
+    garten: null,
+});
+
+const leererFarbzustand = () => ({
+    umriss: AUSWAHL_LEER,
+    fenster: AUSWAHL_LEER,
+    tuer: AUSWAHL_LEER,
+    fassade: AUSWAHL_LEER,
+    garten: AUSWAHL_LEER,
+});
+
+const leererFarbKnopfZustand = () => ({
+    umriss: null,
+    fenster: null,
+    tuer: null,
+    fassade: null,
+    garten: null,
+});
+
+const hausZustaende = [
+    {
+        formAuswahlProKategorie: leererFormzustand(),
+        farbAuswahlProKategorie: leererFarbzustand(),
+        farbKnopfProKategorie: leererFarbKnopfZustand(),
+    },
+    {
+        formAuswahlProKategorie: leererFormzustand(),
+        farbAuswahlProKategorie: leererFarbzustand(),
+        farbKnopfProKategorie: leererFarbKnopfZustand(),
+    },
+    {
+        formAuswahlProKategorie: leererFormzustand(),
+        farbAuswahlProKategorie: leererFarbzustand(),
+        farbKnopfProKategorie: leererFarbKnopfZustand(),
+    },
+    {
+        formAuswahlProKategorie: leererFormzustand(),
+        farbAuswahlProKategorie: leererFarbzustand(),
+        farbKnopfProKategorie: leererFarbKnopfZustand(),
+    },
+];
+
+let aktuellesHaus = 0;
+let formAuswahlProKategorie  = hausZustaende[0].formAuswahlProKategorie;
+let farbAuswahlProKategorie  = hausZustaende[0].farbAuswahlProKategorie;
+let farbKnopfProKategorie    = hausZustaende[0].farbKnopfProKategorie;
+
 // ---- VERLINKUNGEN AUS HTML ----
 // Formen und Farben
 const auswahlfeldFormen = document.querySelectorAll("#auswahl-formen .auswahl-feld");
 const auswahlfeldFarben = document.querySelectorAll("#auswahl-farben .auswahl-feld");
 
-const auswahlFormenBilderElemente = [
+const formAuswahlBilder = [
     document.getElementById("auswahl-formen-bild-1"),
     document.getElementById("auswahl-formen-bild-2"),
     document.getElementById("auswahl-formen-bild-3"),
     document.getElementById("auswahl-formen-bild-4"),
 ];
 
-const auswahlFarbenBilderElemente = [
+const farbenAuswahlBilder = [
     document.getElementById("auswahl-farben-bild-1"),
     document.getElementById("auswahl-farben-bild-2"),
     document.getElementById("auswahl-farben-bild-3"),
@@ -350,6 +380,9 @@ const layerGarten  = document.getElementById("layer-garten");
 const bildschirmLinksKnopf  = document.getElementById("bildschirm-links-knopf");
 const bildschirmRechtsKnopf = document.getElementById("bildschirm-rechts-knopf");
 
+//Gans
+const gansIcon = document.querySelector("#text-feld .gans");
+
 // Anzeige welche Knöpfe gedrückt werden
 const enterAnzeige  = document.getElementById("enter-gedrueckt");
 const obenAnzeige   = document.getElementById("oben-gedrueckt");
@@ -358,88 +391,89 @@ const linksAnzeige  = document.getElementById("links-gedrueckt");
 const rechtsAnzeige = document.getElementById("rechts-gedrueckt");
 
 // ---- HILFSFUNKTIONEN ----
-function getKategorie(formIndex) {
+function ermittleKategorie(formIndex) {
     const bereich = FORM_BEREICHE.find(
-    (b) => formIndex >= b.min && formIndex <= b.max
+        (b) => formIndex >= b.min && formIndex <= b.max
     );
     return bereich ? bereich.kategorie : null;
 }
 
-function getSeitenKategorie() {
+function ermittleSeitenKategorie() {
     const formIndexAufSeite = aktuelleAuswahlFormen;
-    return getKategorie(formIndexAufSeite);
+    return ermittleKategorie(formIndexAufSeite);
 }
 
-// Merkt sich das passende Haus-Bild
-function nehmeHausBild(formIndex, farbIndex) {
-    const kategorie = getKategorie(formIndex);
+// Ermittelt das passende Haus-Bild
+function ermittleHausBild(formIndex, farbIndex) {
+    const kategorie = ermittleKategorie(formIndex);
 
     // Sonderfall: Garten (kein Farb-Index)
     if (kategorie === "garten") {
         const offset = formIndex - AUSWAHL_GARTEN_RANKEN;
         const index = 80 + offset;
 
-        if (index < 80 || index >= haus.length) {
+        if (index < 80 || index >= hausBilder.length) {
             console.warn("Garten-Index außerhalb des Arrays:", index);
             return null;
-            }
-        return haus[index];
+        }
+        return hausBilder[index];
     }
 
     const FARBEN_PRO_FORM = 5;
     const basisIndex = formIndex * FARBEN_PRO_FORM;
     const index = basisIndex + farbIndex;
 
-    if (index < 0 || index >= haus.length) {
+    if (index < 0 || index >= hausBilder.length) {
         console.warn("Haus-Index außerhalb des Arrays:", index);
         return null;
     }
-    return haus[index];
+    return hausBilder[index];
 }
 
-function mapFarbKonstanteZuBlockIndex(formIndex, farbKonstante) {
+// Wandelt Farbauswahl in Variantenindex um
+function ermittleFarbVariante(formIndex, farbKonstante) {
     if (farbKonstante === AUSWAHL_LEER) return 0;
 
-    const kat = getKategorie(formIndex);
-    const mapping = FARB_MAPPING[kat];
-    if (!mapping) return 0;
+    const kategorie = ermittleKategorie(formIndex);
+    const varianten = FARB_VARIANTEN_PRO_KATEGORIE[kategorie];
+    if (!varianten) return 0;
 
-    return mapping[farbKonstante] ?? 0;
+    return varianten[farbKonstante] ?? 0;
 }
 
 // ---- AUSWAHLBEREICH ----
 let aktuelleAuswahlFormen = 0;
 
-function auswahlFormenAnzeigen() {
-    auswahlFormenBilderElemente.forEach((img, i) => {
+function zeigeFormAuswahl() {
+    formAuswahlBilder.forEach((img, i) => {
         const globalIndex = (aktuelleAuswahlFormen + i) % auswahlFormenBilder.length;
-        const kat = getKategorie(globalIndex);
-        const istAusgewaehlt = kat && ausgewaehlteFormProKategorie[kat] === globalIndex;
+        const kategorie = ermittleKategorie(globalIndex);
+        const istAusgewaehlt = kategorie && formAuswahlProKategorie[kategorie] === globalIndex;
 
         img.src = istAusgewaehlt
-        ? auswahlFormAusgewaehlteBilder[globalIndex]
-        : auswahlFormenBilder[globalIndex];
+            ? auswahlFormAusgewaehlteBilder[globalIndex]
+            : auswahlFormenBilder[globalIndex];
     });
 }
 
-function passendeFarbenAnzeigen() {
-    const gruppenIndex = Math.floor(aktuelleAuswahlFormen / 4);
-    const farben = farbGruppen[gruppenIndex];
+function zeigePassendeFarben() {
+    const farbSeitenIndex = Math.floor(aktuelleAuswahlFormen / 4);
+    const farben = farbGruppen[farbSeitenIndex];
 
-    auswahlFarbenBilderElemente.forEach((img, i) => {
+    farbenAuswahlBilder.forEach((img, i) => {
         img.src = auswahlFarbenBilder[farben[i]];
     });
 }
 
-function aktualisiereFarbAuswahlAnzeige() {
-    const seitenKat = getSeitenKategorie();
-    const aktSlot = seitenKat ? farbSlotProKategorie[seitenKat] : null;
+function aktualisiereFarbAuswahl() {
+    const seitenKategorie = ermittleSeitenKategorie();
+    const aktuellerFarbKnopf = seitenKategorie ? farbKnopfProKategorie[seitenKategorie] : null;
 
     auswahlfeldFarben.forEach((feld, i) => {
         const overlay = feld.querySelector(".auswahl-ausgewaehlt");
         if (!overlay) return;
 
-        if (i === aktSlot) {
+        if (i === aktuellerFarbKnopf) {
             overlay.src = auswahlFarbeAusgewaehltesBild;
             overlay.style.opacity = 1;
         } else {
@@ -448,170 +482,167 @@ function aktualisiereFarbAuswahlAnzeige() {
     });
 }
 
-// Seite wechseln (Formen)
-function auswahlFormNaechsteSeite() {
+// Seite wechseln (Es wird auf Form geachtet, da Farbe untergeordnet ist)
+function naechsteAuswahlSeite () {
     aktuelleAuswahlFormen += 4;
 
     if (aktuelleAuswahlFormen >= auswahlFormenBilder.length) {
         aktuelleAuswahlFormen = 0;
     }
 
-    auswahlFormenAnzeigen();
-    passendeFarbenAnzeigen();
-    aktualisiereFarbAuswahlAnzeige();
+    zeigeFormAuswahl();
+    zeigePassendeFarben();
+    aktualisiereFarbAuswahl();
 }
 
-function auswahlFormVorherigeSeite() {
+function vorherigeAuswahlSeite () {
     aktuelleAuswahlFormen -= 4;
 
     if (aktuelleAuswahlFormen < 0) {
         aktuelleAuswahlFormen = auswahlFormenBilder.length - 4;
     }
 
-    auswahlFormenAnzeigen();
-    passendeFarbenAnzeigen();
-    aktualisiereFarbAuswahlAnzeige();
+    zeigeFormAuswahl();
+    zeigePassendeFarben();
+    aktualisiereFarbAuswahl();
 }
 
-// Wenn die Pfeile geklickt werden
-auswahlRechtsKnopf.addEventListener("click", auswahlFormNaechsteSeite);
-auswahlLinksKnopf.addEventListener("click", auswahlFormVorherigeSeite);
+//---Haus anzeigen---
+function zeichneHaus() {
+    bildschirmHintergrund.src = hintergrundBild;
 
-// Markiert-Overlays setzen
+    layerUmriss.src  = "";
+    layerFenster.src = "";
+    layerTuer.src    = "";
+    layerFassade.src = "";
+    layerGarten.src  = "";
+
+    // Kategorien durchgehen
+    for (const kategorie of ["umriss", "fenster", "tuer", "fassade", "garten"]) {
+        const formIndex = formAuswahlProKategorie[kategorie];
+        const farbKonstante = farbAuswahlProKategorie[kategorie];
+
+        if (formIndex === null) continue;
+
+        let hausBildPfad;
+
+        if (kategorie === "garten") {
+            hausBildPfad = ermittleHausBild(formIndex, 0);
+        } else {
+            const farbVariante = ermittleFarbVariante(formIndex, farbKonstante);
+            hausBildPfad = ermittleHausBild(formIndex, farbVariante);
+        }
+
+        if (!hausBildPfad) continue;
+
+        if (kategorie === "umriss")  layerUmriss.src = hausBildPfad;
+        if (kategorie === "fenster") layerFenster.src = hausBildPfad;
+        if (kategorie === "tuer")    layerTuer.src = hausBildPfad;
+        if (kategorie === "fassade") layerFassade.src = hausBildPfad;
+        if (kategorie === "garten")  layerGarten.src = hausBildPfad;
+    }
+
+    zeigeFormAuswahl();
+    zeigePassendeFarben();
+    aktualisiereFarbAuswahl();
+    aktualisiereGans();
+}
+
+function aktualisiereGans() {
+    const gansAnzeigen = aktuellesHaus % gaenseBilder.length;
+    gansIcon.src = gaenseBilder[gansAnzeigen];
+}
+auswahlRechtsKnopf.addEventListener("click", naechsteAuswahlSeite );
+auswahlLinksKnopf.addEventListener("click", vorherigeAuswahlSeite );
+
+// Markiert
 document.querySelectorAll(".auswahl-markiert").forEach((img) => {
     img.src = "Bilder/Auswahl/Markiert.png";
 });
 
-// Initial anzeigen
-auswahlFormenAnzeigen();
-passendeFarbenAnzeigen();
-aktualisiereFarbAuswahlAnzeige();
+zeichneHaus();
 
-// Klick auf Form im Auswahlbereich
+// Auswahlbereich: Auf Form klicken
 auswahlfeldFormen.forEach((feld, i) => {
     feld.addEventListener("click", () => {
         const formIndex = (aktuelleAuswahlFormen + i) % auswahlFormenBilder.length;
-        const kategorie = getKategorie(formIndex);
+        const kategorie = ermittleKategorie(formIndex);
         if (!kategorie) return;
 
-        const umrissGewaeht = ausgewaehlteFormProKategorie.umriss !== null;
+        const umrissGewaehlt = formAuswahlProKategorie.umriss !== null;
         const istUmriss = (kategorie === "umriss");
 
-        if (!istUmriss && !umrissGewaeht) {
+        if (!istUmriss && !umrissGewaehlt) {
             console.log("Erst einen Umriss wählen, bevor Fenster/Tür/Fassade/Garten gesetzt werden.");
             return;
         }
 
-        ausgewaehlteFormProKategorie[kategorie] = formIndex;
-        ausgewaehlteFarbeProKategorie[kategorie] = AUSWAHL_LEER;
-        farbSlotProKategorie[kategorie] = null;
+        formAuswahlProKategorie[kategorie] = formIndex;
+        farbAuswahlProKategorie[kategorie] = AUSWAHL_LEER;
+        farbKnopfProKategorie[kategorie] = null;
 
-        const bildPfad = nehmeHausBild(formIndex, 0);
-        if (!bildPfad) return;
+        zeichneHaus();
 
-        if (kategorie === "umriss") {
-            layerUmriss.src = bildPfad;
-        } else if (kategorie === "fenster") {
-            layerFenster.src = bildPfad;
-        } else if (kategorie === "tuer") {
-            layerTuer.src = bildPfad;
-        } else if (kategorie === "fassade") {
-            layerFassade.src = bildPfad;
-        } else if (kategorie === "garten") {
-            layerGarten.src = bildPfad;
-        }
-
-        auswahlFormenAnzeigen();
-        aktualisiereFarbAuswahlAnzeige();
-
-        console.log("Form gewählt:", formIndex, "Kategorie:", kategorie, "Bild:", bildPfad);
+        console.log("Form gewählt:", formIndex, "Kategorie:", kategorie);
     });
 });
 
-// Farbwechsel
+// Auswahlbereich: Auf Farbe klicken 
 auswahlfeldFarben.forEach((feld, i) => {
     feld.addEventListener("click", () => {
-        const seitenKat = getSeitenKategorie();
-        if (!seitenKat) return;
+        const seitenKategorie = ermittleSeitenKategorie();
+        if (!seitenKategorie) return;
 
-        const umrissGewaeht = ausgewaehlteFormProKategorie.umriss !== null;
-        if (!umrissGewaeht && seitenKat !== "umriss") {
+        const umrissGewaehlt = formAuswahlProKategorie.umriss !== null;
+        if (!umrissGewaehlt && seitenKategorie !== "umriss") {
             console.log("Erst einen Umriss wählen, bevor Farben für andere Teile gesetzt werden.");
             return;
         }
 
-        if (seitenKat === "garten") {
+        if (seitenKategorie === "garten") {
             console.log("Garten hat keine Farben, Farbklick wird ignoriert.");
             return;
         }
 
-        const formIndex = ausgewaehlteFormProKategorie[seitenKat];
+        const formIndex = formAuswahlProKategorie[seitenKategorie];
         if (formIndex === null) {
             console.log("In dieser Kategorie ist noch keine Form gewählt, Farbe wird ignoriert.");
             return;
         }
 
-        const gruppenIndex = Math.floor(aktuelleAuswahlFormen / 4);
-        const farbKonstante = farbGruppen[gruppenIndex][i];
+        const farbSeitenIndex = Math.floor(aktuelleAuswahlFormen / 4);
+        const farbKonstante = farbGruppen[farbSeitenIndex][i];
 
-        ausgewaehlteFarbeProKategorie[seitenKat] = farbKonstante;
-        farbSlotProKategorie[seitenKat] = i;
-        aktualisiereFarbAuswahlAnzeige();
+        farbAuswahlProKategorie[seitenKategorie] = farbKonstante;
+        farbKnopfProKategorie[seitenKategorie] = i;
 
-        const farbIndexImBlock = mapFarbKonstanteZuBlockIndex(formIndex, farbKonstante);
-        const bildPfad = nehmeHausBild(formIndex, farbIndexImBlock);
-        if (!bildPfad) return;
+        zeichneHaus();
 
-        if (seitenKat === "umriss") {
-            layerUmriss.src = bildPfad;
-        } else if (seitenKat === "fenster") {
-            layerFenster.src = bildPfad;
-        } else if (seitenKat === "tuer") {
-            layerTuer.src = bildPfad;
-        } else if (seitenKat === "fassade") {
-            layerFassade.src = bildPfad;
-        }
-
-        console.log(
-            "Farbe gewählt:", farbKonstante,
-            "Kategorie:", seitenKat,
-            "Block-Index:", farbIndexImBlock,
-            "Bild:", bildPfad
-        );
+        console.log("Farbe gewählt:", farbKonstante, "Kategorie:", seitenKategorie);
     });
 });
 
-// ---- BILDSCHIRM / HINTERGRUND ----
-let aktuellesHintergrundbild = 0;
+function wechsleHaus(schritt) {
+    aktuellesHaus += schritt;
 
-function hausHintergrundAnzeigen() {
-    bildschirmHintergrund.src = hausHintergrund[aktuellesHintergrundbild];
+    if (aktuellesHaus < 0) {
+        aktuellesHaus = hausZustaende.length - 1;
+    } else if (aktuellesHaus >= hausZustaende.length) {
+        aktuellesHaus = 0;
+    }
+
+    formAuswahlProKategorie  = hausZustaende[aktuellesHaus].formAuswahlProKategorie;
+    farbAuswahlProKategorie  = hausZustaende[aktuellesHaus].farbAuswahlProKategorie;
+    farbKnopfProKategorie    = hausZustaende[aktuellesHaus].farbKnopfProKategorie;
+
+    zeichneHaus();
 }
 
-hausHintergrundAnzeigen();
-
-bildschirmRechtsKnopf.addEventListener("click", () => {
-    aktuellesHintergrundbild++;
-
-    if (aktuellesHintergrundbild >= hausHintergrund.length) {
-        aktuellesHintergrundbild = 0;
-    }
-
-    hausHintergrundAnzeigen();
-});
-
-bildschirmLinksKnopf.addEventListener("click", () => {
-    aktuellesHintergrundbild--;
-
-    if (aktuellesHintergrundbild < 0) {
-        aktuellesHintergrundbild = hausHintergrund.length - 1;
-    }
-
-    hausHintergrundAnzeigen();
-});
+bildschirmRechtsKnopf.addEventListener("click", () => wechsleHaus(1));
+bildschirmLinksKnopf.addEventListener("click", () => wechsleHaus(-1));
 
 // ---- TASTEN-ANZEIGE ----
-const keyToElement = {
+const eingabeZuAnzeige = {
     Enter: enterAnzeige,
     " ": enterAnzeige,
     ArrowUp: obenAnzeige,
@@ -629,11 +660,11 @@ const keyToElement = {
 };
 
 document.addEventListener("keydown", (event) => {
-    const el = keyToElement[event.key];
+    const el = eingabeZuAnzeige[event.key];
     if (el) el.style.display = "block";
 });
 
 document.addEventListener("keyup", (event) => {
-    const el = keyToElement[event.key];
+    const el = eingabeZuAnzeige[event.key];
     if (el) el.style.display = "none";
 });

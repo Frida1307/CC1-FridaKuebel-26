@@ -235,8 +235,8 @@ body {
   justify-content: center;
   align-items: center;
   pointer-events: none;
+  overflow: hidden;  
   z-index: 2;
-
 }
 
 #text-feld img {
@@ -247,6 +247,8 @@ body {
 
 #text-feld .gans {
   position: absolute;
-  left: 10%;
-  bottom: 20%;
+  top: -6%;
+  left: -6%;
+  width: 35%;
+  height: auto;
 }
