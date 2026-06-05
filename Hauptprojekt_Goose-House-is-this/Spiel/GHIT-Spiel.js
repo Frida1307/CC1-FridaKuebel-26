@@ -81,6 +81,13 @@ const farbGruppen = [
     [AUSWAHL_LEER, AUSWAHL_LEER, AUSWAHL_LEER, AUSWAHL_LEER] // Garten
 ];
 
+//Gänse-Rahmen-Farbenrm
+const rahmenFarben = [
+    "#961818", // Brända = rot
+    "#0a1d52", // Ken    = blau
+    "#386341", // Tav    = grün
+    "#f1c113", // Goose  = gelb
+];
 // ---- BILDER ----
 // Auswahl-Formen:
 const auswahlFormenBilder = [
@@ -382,6 +389,8 @@ const bildschirmRechtsKnopf = document.getElementById("bildschirm-rechts-knopf")
 
 //Gans
 const gansIcon = document.querySelector("#text-feld .gans");
+const rahmenKlassen = ["haus-0-rahmen", "haus-1-rahmen", "haus-2-rahmen", "haus-3-rahmen"];
+
 
 // Anzeige welche Knöpfe gedrückt werden
 const enterAnzeige  = document.getElementById("enter-gedrueckt");
@@ -398,6 +407,59 @@ function ermittleKategorie(formIndex) {
     return bereich ? bereich.kategorie : null;
 }
 
+// Schaut eine Form oder FArbe schon in einem anderen Haus benutzt wird
+function formSchonVergeben(formIndex, kategorie) {
+    for (let i = 0; i < hausZustaende.length; i++) {
+        if (i === aktuellesHaus) continue;
+
+        const state = hausZustaende[i].formAuswahlProKategorie;
+        if (state[kategorie] === formIndex) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function farbeSchonVergeben(kategorie, farbKonstante) {
+    if (farbKonstante === AUSWAHL_LEER) return false;
+
+    for (let i = 0; i < hausZustaende.length; i++) {
+        if (i === aktuellesHaus) continue;
+
+        const state = hausZustaende[i].farbAuswahlProKategorie;
+        if (state[kategorie] === farbKonstante) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function findeFormBesitzer(formIndex, kategorie) {
+    for (let i = 0; i < hausZustaende.length; i++) {
+        if (i === aktuellesHaus) continue; // aktuelles Haus ignorieren
+
+        const state = hausZustaende[i].formAuswahlProKategorie;
+        if (state[kategorie] === formIndex) {
+            return i; // Haus-Index zurückgeben
+        }
+    }
+    return null;
+}
+
+function findeFarbBesitzer(kategorie, farbKonstante) {
+    if (farbKonstante === AUSWAHL_LEER) return null;
+
+    for (let i = 0; i < hausZustaende.length; i++) {
+        if (i === aktuellesHaus) continue;
+
+        const state = hausZustaende[i].farbAuswahlProKategorie;
+        if (state[kategorie] === farbKonstante) {
+            return i;
+        }
+    }
+    return null;
+}
+// Schaut auf welcher Seite man ist
 function ermittleSeitenKategorie() {
     const formIndexAufSeite = aktuelleAuswahlFormen;
     return ermittleKategorie(formIndexAufSeite);
@@ -441,6 +503,33 @@ function ermittleFarbVariante(formIndex, farbKonstante) {
     return varianten[farbKonstante] ?? 0;
 }
 
+// Doppelklick
+let letzterFormKlick = { index: null, zeit: 0 };
+let letzterFarbKlick = { key: null, zeit: 0 };
+
+function istDoppelklick(typ, key) {
+    const jetzt = Date.now();
+    const MAX_ABSTAND = 400;
+
+    if (typ === "form") {
+        if (letzterFormKlick.index === key && (jetzt - letzterFormKlick.zeit) < MAX_ABSTAND) {
+            return true;
+        }
+        letzterFormKlick = { index: key, zeit: jetzt };
+        return false;
+    }
+
+    if (typ === "farbe") {
+        if (letzterFarbKlick.key === key && (jetzt - letzterFarbKlick.zeit) < MAX_ABSTAND) {
+            return true;
+        }
+        letzterFarbKlick = { key, zeit: jetzt };
+        return false;
+    }
+
+    return false;
+}
+
 // ---- AUSWAHLBEREICH ----
 let aktuelleAuswahlFormen = 0;
 
@@ -453,15 +542,51 @@ function zeigeFormAuswahl() {
         img.src = istAusgewaehlt
             ? auswahlFormAusgewaehlteBilder[globalIndex]
             : auswahlFormenBilder[globalIndex];
+
+        const feld = auswahlfeldFormen[i];
+
+        feld.classList.remove(
+            "bereits-vergeben",
+            "vergeben-haus-0",
+            "vergeben-haus-1",
+            "vergeben-haus-2",
+            "vergeben-haus-3"
+        );
+
+        if (kategorie) {
+            const besitzer = findeFormBesitzer(globalIndex, kategorie);
+            if (besitzer !== null) {
+                feld.classList.add("bereits-vergeben", `vergeben-haus-${besitzer}`);
+            }
+        }
     });
 }
 
 function zeigePassendeFarben() {
     const farbSeitenIndex = Math.floor(aktuelleAuswahlFormen / 4);
     const farben = farbGruppen[farbSeitenIndex];
+    const kategorie = ermittleSeitenKategorie();
 
     farbenAuswahlBilder.forEach((img, i) => {
-        img.src = auswahlFarbenBilder[farben[i]];
+        const farbKonstante = farben[i];
+        img.src = auswahlFarbenBilder[farbKonstante];
+
+        const feld = auswahlfeldFarben[i];
+        
+        feld.classList.remove(
+            "bereits-vergeben",
+            "vergeben-haus-0",
+            "vergeben-haus-1",
+            "vergeben-haus-2",
+            "vergeben-haus-3"
+        );
+
+        if (kategorie) {
+            const besitzer = findeFarbBesitzer(kategorie, farbKonstante);
+            if (besitzer !== null) {
+                feld.classList.add("bereits-vergeben", `vergeben-haus-${besitzer}`);
+            }
+        }
     });
 }
 
@@ -548,10 +673,27 @@ function zeichneHaus() {
     aktualisiereGans();
 }
 
+//Gans einsetzen
 function aktualisiereGans() {
     const gansAnzeigen = aktuellesHaus % gaenseBilder.length;
     gansIcon.src = gaenseBilder[gansAnzeigen];
 }
+
+function aktualisiereHausRahmen() {
+    const rahmenElement = document.getElementById("platzierbereich");
+    if (!rahmenElement) return;
+
+    rahmenKlassen.forEach((klasse) => {
+        rahmenElement.classList.remove(klasse);
+    });
+
+    const neueKlasse = `haus-${aktuellesHaus}-rahmen`;
+    rahmenElement.classList.add(neueKlasse);
+
+    const farbe = rahmenFarben[aktuellesHaus] || "#ff0000";
+    document.documentElement.style.setProperty("--vergeben-farbe", farbe);
+}
+
 auswahlRechtsKnopf.addEventListener("click", naechsteAuswahlSeite );
 auswahlLinksKnopf.addEventListener("click", vorherigeAuswahlSeite );
 
@@ -561,6 +703,7 @@ document.querySelectorAll(".auswahl-markiert").forEach((img) => {
 });
 
 zeichneHaus();
+aktualisiereHausRahmen();
 
 // Auswahlbereich: Auf Form klicken
 auswahlfeldFormen.forEach((feld, i) => {
@@ -577,13 +720,25 @@ auswahlfeldFormen.forEach((feld, i) => {
             return;
         }
 
+        const istVergeben = formSchonVergeben(formIndex, kategorie);
+
+        if (istVergeben) {
+            const doppelt = istDoppelklick("form", formIndex);
+            if (!doppelt) {
+                console.log("Diese Form ist schon in einem anderen Haus vergeben. Doppelklick zum Übernehmen.");
+                return;
+            }
+        } else {
+            istDoppelklick("form", null);
+        }
+
         formAuswahlProKategorie[kategorie] = formIndex;
         farbAuswahlProKategorie[kategorie] = AUSWAHL_LEER;
         farbKnopfProKategorie[kategorie] = null;
 
         zeichneHaus();
 
-        console.log("Form gewählt:", formIndex, "Kategorie:", kategorie);
+        console.log("Form gewählt:", formIndex, "Kategorie:", kategorie, " (vergeben:", istVergeben, ")");
     });
 });
 
@@ -613,12 +768,26 @@ auswahlfeldFarben.forEach((feld, i) => {
         const farbSeitenIndex = Math.floor(aktuelleAuswahlFormen / 4);
         const farbKonstante = farbGruppen[farbSeitenIndex][i];
 
+        const istVergeben = farbeSchonVergeben(seitenKategorie, farbKonstante);
+
+        const klickKey = `${seitenKategorie}-${farbKonstante}`;
+
+        if (istVergeben) {
+            const doppelt = istDoppelklick("farbe", klickKey);
+            if (!doppelt) {
+                console.log("Diese Farbe ist in dieser Kategorie schon in einem anderen Haus vergeben. Doppelklick zum Übernehmen.");
+                return;
+            }
+        } else {
+            istDoppelklick("farbe", null);
+        }
+
         farbAuswahlProKategorie[seitenKategorie] = farbKonstante;
         farbKnopfProKategorie[seitenKategorie] = i;
 
         zeichneHaus();
 
-        console.log("Farbe gewählt:", farbKonstante, "Kategorie:", seitenKategorie);
+        console.log("Farbe gewählt:", farbKonstante, "Kategorie:", seitenKategorie, " (vergeben:", istVergeben, ")");
     });
 });
 
@@ -636,6 +805,7 @@ function wechsleHaus(schritt) {
     farbKnopfProKategorie    = hausZustaende[aktuellesHaus].farbKnopfProKategorie;
 
     zeichneHaus();
+    aktualisiereHausRahmen();
 }
 
 bildschirmRechtsKnopf.addEventListener("click", () => wechsleHaus(1));

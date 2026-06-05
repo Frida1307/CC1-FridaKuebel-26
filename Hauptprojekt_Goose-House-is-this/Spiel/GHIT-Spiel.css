@@ -179,6 +179,39 @@ body {
   top: 40.35%;
 }
 
+.auswahl-feld.bereits-vergeben::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 3px solid rgba(255, 0, 0, 0.8); /* Fallback */
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+/* Brända hat's genommen (Haus 0) */
+.auswahl-feld.vergeben-haus-0::after {
+  border-color: #961818; /* rot */
+}
+
+/* Ken hat's genommen (Haus 1) */
+.auswahl-feld.vergeben-haus-1::after {
+  border-color: #0a1d52; /* blau */
+}
+
+/* Tav hat's genommen (Haus 2) */
+.auswahl-feld.vergeben-haus-2::after {
+  border-color: #386341; /* grün */
+}
+
+/* Goose hat's genommen (Haus 3) */
+.auswahl-feld.vergeben-haus-3::after {
+  border-color: #f1c113; /* gelb */
+}
+
+.auswahl-feld.bereits-vergeben img {
+  opacity: 0.5;
+}
+
 /* ----- BILDSCHIRM ----- */
 #bildschirm-positionierer {
   position: absolute;
@@ -209,6 +242,22 @@ body {
   height: 100%;
   object-fit: contain;
   pointer-events: none;
+}
+
+.haus-0-rahmen {
+  box-shadow: 0 0 0 5px #961818; /*Brända*/
+}
+
+.haus-1-rahmen {
+  box-shadow: 0 0 0 5px #0a1d52; /*Ken*/
+}
+
+.haus-2-rahmen {
+  box-shadow: 0 0 0 5px #386341; /*Tav*/
+}
+
+.haus-3-rahmen {
+  box-shadow: 0 0 0 5px #f1c113; /*Goose*/
 }
 
 /* Pfeile (für Bildschirm) */
