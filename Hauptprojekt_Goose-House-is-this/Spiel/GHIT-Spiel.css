@@ -1,3 +1,8 @@
+@font-face {
+  font-family: "Gaenseschrift";
+  src: url("Schriftart/Schriftart-Raetsel.otf") format("truetype");
+}
+
 body {
   margin: 0;
   background-color: #000000;
@@ -183,29 +188,24 @@ body {
   content: "";
   position: absolute;
   inset: 0;
-  border: 3px solid rgba(255, 0, 0, 0.8); /* Fallback */
   box-sizing: border-box;
   pointer-events: none;
 }
 
-/* Brända hat's genommen (Haus 0) */
 .auswahl-feld.vergeben-haus-0::after {
-  border-color: #961818; /* rot */
+  border-color: #961818;
 }
 
-/* Ken hat's genommen (Haus 1) */
 .auswahl-feld.vergeben-haus-1::after {
-  border-color: #0a1d52; /* blau */
+  border-color: #0a1d52;
 }
 
-/* Tav hat's genommen (Haus 2) */
 .auswahl-feld.vergeben-haus-2::after {
-  border-color: #386341; /* grün */
+  border-color: #386341;
 }
 
-/* Goose hat's genommen (Haus 3) */
 .auswahl-feld.vergeben-haus-3::after {
-  border-color: #f1c113; /* gelb */
+  border-color: #f1c113; 
 }
 
 .auswahl-feld.bereits-vergeben img {
@@ -292,12 +292,71 @@ body {
   width: 100%;
   height: auto;
   display: block;
+  pointer-events: none;
 }
 
 #text-feld .gans {
   position: absolute;
-  top: -6%;
-  left: -6%;
-  width: 35%;
+  bottom: -12%;
+  left: 3.5%;
+  width: 20%;
   height: auto;
+  pointer-events: none;
+}
+
+
+/*Dialog*/
+
+#dialog {
+  position: absolute;
+  left: 25%;
+  right: 10%;
+  top: 20%;
+  bottom: 10%;
+  display: flex;
+  flex-direction: column;
+  font-family: "Gaenseschrift";
+  color: #000000;
+  pointer-events: auto;
+}
+
+#dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 87%;
+  margin-bottom: 4%;
+}
+
+#gans-name {
+  flex: 1;
+  text-align: left;
+  font-weight: bold;
+}
+
+#dialog-inhalt {
+  flex: 1;
+  font-size: 80%;
+  line-height: 130%;
+  overflow-y: auto;
+  white-space: pre-wrap;
+}
+
+#dialog-links-knopf,
+#dialog-rechts-knopf {
+  position: relative;
+  width: 10%;
+  height: 80%;
+}
+
+/*Abgabe-Knopf*/
+#abgeben-knopf {
+  position: absolute;
+  width: 10%;
+  height: 10%;
+  right: 32%;
+  top: 30%;
+  font-family: "Gaenseschrift";
+  color: #000000;
+  pointer-events: auto;
 }

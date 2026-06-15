@@ -15,12 +15,12 @@ const AUSWAHL_TUER_SCHICK = 9;
 const AUSWAHL_TUER_RECHTECK = 10; 
 const AUSWAHL_TUER_GLAS = 11; 
 
-const AUSWAHL_FASSADE_PFLANZE = 12; 
+const AUSWAHL_FASSADE_RANKEN = 12; 
 const AUSWAHL_FASSADE_SCHORNSTEIN = 13; 
 const AUSWAHL_FASSADE_BALKON = 14; 
-const AUSWAHL_FASSADE_LAMPE = 15;
+const AUSWAHL_FASSADE_GRAFFITI = 15;
 
-const AUSWAHL_GARTEN_RANKEN = 16; 
+const AUSWAHL_GARTEN_BLUMEN = 16; 
 const AUSWAHL_GARTEN_PILZ = 17; 
 const AUSWAHL_GARTEN_BUSCH = 18;
 const AUSWAHL_GARTEN_FROSCH = 19;
@@ -40,8 +40,8 @@ const FORM_BEREICHE = [
     { min: AUSWAHL_QUADRAT,         max: AUSWAHL_BLUME,           kategorie: "umriss" },
     { min: AUSWAHL_FENSTER_RUND,    max: AUSWAHL_FENSTER_DREIECK, kategorie: "fenster" },
     { min: AUSWAHL_TUER_RUND,       max: AUSWAHL_TUER_GLAS,       kategorie: "tuer" },
-    { min: AUSWAHL_FASSADE_PFLANZE, max: AUSWAHL_FASSADE_LAMPE,   kategorie: "fassade" },
-    { min: AUSWAHL_GARTEN_RANKEN,   max: AUSWAHL_GARTEN_FROSCH,   kategorie: "garten" },
+    { min: AUSWAHL_FASSADE_RANKEN, max: AUSWAHL_FASSADE_GRAFFITI,   kategorie: "fassade" },
+    { min: AUSWAHL_GARTEN_BLUMEN,   max: AUSWAHL_GARTEN_FROSCH,   kategorie: "garten" },
 ];
 
 // Farb-Varianten pro Kategorie (Block-Index in hausBilder[])
@@ -88,6 +88,114 @@ const rahmenFarben = [
     "#386341", // Tav    = grün
     "#f1c113", // Goose  = gelb
 ];
+
+const gansNamen = ["BRÄNDA", "KEN", "TAV", "GOOSE"];
+
+//Dialog:
+const raetselTexte = [
+    //BRÄNDA:
+    ["HEY!! ICH BIN BRÄNDA VIELEN DANK DAS DU UNS HILFST! DANK DEM TSUNAMI LIEGT UNSER DORF JETZT ECHT IN SCHUTT UND ASCHE. DIE ANDEREN SIND UMGEZOGEN UND WIR SIND DIE LETZTEN VIER. -  ICH HÄTTE ECHT GEDACHT, DASS MEIN HAUS STAND HÄLT MIT SEINER ROBUSTEN FORM UND DEN VIELEN ECKEN UND KANTEN. MIR IST SO KALT, ICH WERDE DAS HAUS WIEDER IN DER GLUT- UND FEUERFARBE STREICHEN, DAMIT ES SICH WARM ANFÜHLT.",
+     "TAV IST SO GOLDIG! ICH MUSS NUR BEI IHR NUR AM BLUMENKASTEN VORBEISCHAUEN, DANN STEHT SIE SCHON DIREKT VOR MEINER TÜR UND HILFT MIR BEIM BLUMEN GIESSEN.",
+     "MEINE TÜR PASST SO GUT ZU MEINEM HAUS, SOGAR DIE FARBE IST GLEICH!  KENS TÜR ÄHNELT MEINER, NUR IST SEINE VIEL SCHNÖSELIGER.",
+     "ICH LIEBE BLUMEM! DARUM DÜRFEN SIE ES SICH AUCH AN MEINEM HAUS BEQUEM MACHEN. UND SIE HABEN AUCH MEINE LIEBLINGSFARBE!"],
+
+    //KEN:
+    ["Wer bist du denn? Du willst mir helfen!? Ich glaub zwar nicht, dass du wirklich weiterhelfen kannst. Aber naja, wenn du schon mal da bist… Fast alles an meinem Haus hat die selbe Farbe (Auch wenn manche meinen es wäre keine Farbe, was soll es dann sonst sein)",
+     "Ich verstehe mich eigentlich ganz gut mit meinen Nachbarn. Die eine ist zwar viel zu laut und die andere echt schusslig, aber  insgesamt sind sie echt nett. Und ich muss sagen, Tav hat eine echt schöne Tür. So schick!  Erinnert mich an eine Gondeltür",
+     "Auch wenn Brända laut, nervig und oft viel zu viel ist, hat sie auch herzliche Seiten. Als mein Balkon gestrichen musste, war sie sofort da. Mit Farbeimer sogar… Sie hatte sogar die passende Farbe! Sie mag ja eigentlich nichts dunkles",
+     "Du weißt noch nichts über Goose? Verständlich, mit dem reden wir nicht. Er selbst ja auch nicht… Hast du seinen Umriss schon gesehen? Er kann da doch niemals Platz drinnen haben. Ich kann auch nie in die Richtung schauen, ich werde jedes Mal geblendet."],
+
+    //TAV:
+    ["Guten Morgen. Vielen Dank das du uns unterstützt. Ich würde gerne helfen, aber bei mir im Leben läuft gerade gar nichts rund. Anders als bei meinem Haus, haha. Sorry...",
+     "Ken und Brända könnten nicht unterschiedlicher sein. Wenn Brända eine Flamme wäre, wäre Ken ein Eiswürfel, mit seiner kühlen Art",
+     "Kinder können echt anstrengend sein, letztens musste ich zwei aus dem Schornstein retten. Ich weiß bis heute nicht, was sie oben wollten. Vielleicht dachten sie wegen der Farbe, dass es ein See sei.",
+     "Ich wollte gerne, dass meine Tür und mein Fenster dieselbe Farbe haben. Doch dann hatte Brända auch schon ein weißes Fenster, also entschied ich mich für eine andere Fensterfarbe."],
+
+    //GOOSE:
+    ["...",
+     "...",
+     ".. . .",
+     "...",
+     "- .- ...- / -- .- --.  / .--. .. .-.. --.. . ",
+     "𓆏"
+    ]
+];
+
+const dialogSeitenIndex = [0, 0, 0, 0];
+
+const loesungZustaende = [
+    // Haus Brända:
+    {
+        formAuswahlProKategorie: {
+            umriss:  AUSWAHL_TETRIS,
+            fenster: AUSWAHL_FENSTER_DREIECK,
+            tuer:    AUSWAHL_TUER_RECHTECK,
+            fassade: AUSWAHL_FASSADE_RANKEN,
+            garten:  AUSWAHL_GARTEN_BLUMEN,
+        },
+        farbAuswahlProKategorie: {
+            umriss:  AUSWAHL_ROT,
+            fenster: AUSWAHL_WEISS,
+            tuer:    AUSWAHL_ROT,
+            fassade: AUSWAHL_ROT,
+            garten:  AUSWAHL_LEER,
+        }
+    },
+
+    // Haus Ken
+    {
+        formAuswahlProKategorie: {
+            umriss:  AUSWAHL_QUADRAT,
+            fenster: AUSWAHL_FENSTER_SCHICK,
+            tuer:    AUSWAHL_TUER_SCHICK,
+            fassade: AUSWAHL_FASSADE_BALKON,
+            garten:  AUSWAHL_GARTEN_BUSCH,
+        },
+        farbAuswahlProKategorie: {
+            umriss:  AUSWAHL_ROT,
+            fenster: AUSWAHL_SCHWARZ,
+            tuer:    AUSWAHL_SCHWARZ,
+            fassade: AUSWAHL_SCHWARZ,
+            garten:  AUSWAHL_LEER,
+        }
+    },
+
+    // Haus Tav
+    {
+        formAuswahlProKategorie: {
+            umriss:  AUSWAHL_KREIS,
+            fenster: AUSWAHL_FENSTER_RECHTECK,
+            tuer:    AUSWAHL_TUER_GLAS,
+            fassade: AUSWAHL_FASSADE_SCHORNSTEIN,
+            garten:  AUSWAHL_GARTEN_PILZ,
+        },
+        farbAuswahlProKategorie: {
+            umriss:  AUSWAHL_GRUEN,
+            fenster: AUSWAHL_GELB,
+            tuer:    AUSWAHL_WEISS,
+            fassade: AUSWAHL_BLAU,
+            garten:  AUSWAHL_LEER,
+        }
+    },
+
+    // Haus Goose
+    {
+        formAuswahlProKategorie: {
+            umriss:  AUSWAHL_BLUME,
+            fenster: AUSWAHL_FENSTER_RUND,
+            tuer:    AUSWAHL_TUER_RUND,
+            fassade: AUSWAHL_FASSADE_GRAFFITI,
+            garten:  AUSWAHL_GARTEN_FROSCH,
+        },
+        farbAuswahlProKategorie: {
+            umriss:  AUSWAHL_GELB,
+            fenster: AUSWAHL_BRAUN,
+            tuer:    AUSWAHL_BRAUN,
+            fassade: AUSWAHL_WEISS,
+            garten:  AUSWAHL_LEER,
+        }
+    }
+];
 // ---- BILDER ----
 // Auswahl-Formen:
 const auswahlFormenBilder = [
@@ -108,8 +216,8 @@ const auswahlFormenBilder = [
 
     "Bilder/Auswahl/Auswahl-Formen/Fassade/Fassade-Ranken.png",
     "Bilder/Auswahl/Auswahl-Formen/Fassade/Fassade-Schornstein.png",
-    "Bilder/Auswahl/Auswahl-Formen/Fassade/Fassade-Ranken.png",
-    "Bilder/Auswahl/Auswahl-Formen/Fassade/Fassade-Ranken.png",
+    "Bilder/Auswahl/Auswahl-Formen/Fassade/Fassade-Balkon.png",
+    "Bilder/Auswahl/Auswahl-Formen/Fassade/Fassade-Graffiti.png",
 
     "Bilder/Auswahl/Auswahl-Formen/Garten/Garten-Blume.png",
     "Bilder/Auswahl/Auswahl-Formen/Garten/Garten-Pilz.png",
@@ -136,8 +244,8 @@ const auswahlFormAusgewaehlteBilder = [
 
     "Bilder/Auswahl/Auswahl-Formen/Fassade/Fassade-Ranken-ausgewaehlt.png",
     "Bilder/Auswahl/Auswahl-Formen/Fassade/Fassade-Schornstein-ausgewaehlt.png",
-    "Bilder/Auswahl/Auswahl-Formen/Fassade/Fassade-Ranken-ausgewaehlt.png",
-    "Bilder/Auswahl/Auswahl-Formen/Fassade/Fassade-Ranken-ausgewaehlt.png",
+    "Bilder/Auswahl/Auswahl-Formen/Fassade/Fassade-Balkon-ausgewaehlt.png",
+    "Bilder/Auswahl/Auswahl-Formen/Fassade/Fassade-Graffiti-ausgewaehlt.png",
 
     "Bilder/Auswahl/Auswahl-Formen/Garten/Garten-Blume-ausgewaehlt.png",
     "Bilder/Auswahl/Auswahl-Formen/Garten/Garten-Pilz-ausgewaehlt.png",
@@ -282,12 +390,12 @@ const hausBilder = [
     "Bilder/Haeuser/Fassade/Balkon/Balkon-Blau.png",
     "Bilder/Haeuser/Fassade/Balkon/Balkon-Schwarz.png",
 
-    // LAMPE (75–79)
-    "Bilder/Haeuser/Fassade/Lampe/Lampe-farblos.png",
-    "Bilder/Haeuser/Fassade/Lampe/Lampe-Weiss.png",
-    "Bilder/Haeuser/Fassade/Lampe/Lampe-Rot.png",
-    "Bilder/Haeuser/Fassade/Lampe/Lampe-Blau.png",
-    "Bilder/Haeuser/Fassade/Lampe/Lampe-Schwarz.png",
+    // GRAFFITI (75–79)
+    "Bilder/Haeuser/Fassade/Graffiti/Graffiti-farblos.png",
+    "Bilder/Haeuser/Fassade/Graffiti/Graffiti-Weiss.png",
+    "Bilder/Haeuser/Fassade/Graffiti/Graffiti-Rot.png",
+    "Bilder/Haeuser/Fassade/Graffiti/Graffiti-Blau.png",
+    "Bilder/Haeuser/Fassade/Graffiti/Graffiti-Schwarz.png",
 
     // --- GARTEN ---
     // BLUME (80)
@@ -353,6 +461,10 @@ let formAuswahlProKategorie  = hausZustaende[0].formAuswahlProKategorie;
 let farbAuswahlProKategorie  = hausZustaende[0].farbAuswahlProKategorie;
 let farbKnopfProKategorie    = hausZustaende[0].farbKnopfProKategorie;
 
+let dialogTimer             = null;
+let aktuellerDialogText     = "";
+let aktuellerDialogIndex    = 0;
+
 // ---- VERLINKUNGEN AUS HTML ----
 // Formen und Farben
 const auswahlfeldFormen = document.querySelectorAll("#auswahl-formen .auswahl-feld");
@@ -398,6 +510,30 @@ const obenAnzeige   = document.getElementById("oben-gedrueckt");
 const untenAnzeige  = document.getElementById("unten-gedrueckt");
 const linksAnzeige  = document.getElementById("links-gedrueckt");
 const rechtsAnzeige = document.getElementById("rechts-gedrueckt");
+
+//Dialog-Text
+const dialogContainer   = document.getElementById("dialog");
+const dialogGansName    = document.getElementById("gans-name");
+const dialogInhalt      = document.getElementById("dialog-inhalt");
+const dialogLinksKnopf  = document.getElementById("dialog-links-knopf");
+const dialogRechtsKnopf = document.getElementById("dialog-rechts-knopf");
+
+const abgebenKnopf = document.getElementById("abgeben-knopf");
+
+//Sound:
+const braendaStimme = new Audio("Sounds/type.wav");
+braendaStimme.volume = 0.3;
+
+const kenStimme = new Audio("Sounds/type.wav");
+kenStimme.volume = 0.3;
+
+const tavStimme = new Audio("Sounds/type.wav");
+tavStimme.volume = 0.3;
+
+const gooseStimme = new Audio("Sounds/type.wav");
+gooseStimme.volume = 0.3;
+
+
 
 // ---- HILFSFUNKTIONEN ----
 function ermittleKategorie(formIndex) {
@@ -471,7 +607,7 @@ function ermittleHausBild(formIndex, farbIndex) {
 
     // Sonderfall: Garten (kein Farb-Index)
     if (kategorie === "garten") {
-        const offset = formIndex - AUSWAHL_GARTEN_RANKEN;
+        const offset = formIndex - AUSWAHL_GARTEN_BLUMEN;
         const index = 80 + offset;
 
         if (index < 80 || index >= hausBilder.length) {
@@ -704,6 +840,7 @@ document.querySelectorAll(".auswahl-markiert").forEach((img) => {
 
 zeichneHaus();
 aktualisiereHausRahmen();
+aktualisiereDialog();
 
 // Auswahlbereich: Auf Form klicken
 auswahlfeldFormen.forEach((feld, i) => {
@@ -715,7 +852,7 @@ auswahlfeldFormen.forEach((feld, i) => {
         const umrissGewaehlt = formAuswahlProKategorie.umriss !== null;
         const istUmriss = (kategorie === "umriss");
 
-        if (!istUmriss && !umrissGewaehlt) {
+        if (!istUmriss && kategorie !== "garten" && !umrissGewaehlt) {
             console.log("Erst einen Umriss wählen, bevor Fenster/Tür/Fassade/Garten gesetzt werden.");
             return;
         }
@@ -728,14 +865,31 @@ auswahlfeldFormen.forEach((feld, i) => {
                 console.log("Diese Form ist schon in einem anderen Haus vergeben. Doppelklick zum Übernehmen.");
                 return;
             }
+
+            const besitzerIndex = findeFormBesitzer(formIndex, kategorie);
+            if (besitzerIndex !== null) {
+                const besitzerState = hausZustaende[besitzerIndex];
+                besitzerState.formAuswahlProKategorie[kategorie] = null;
+                besitzerState.farbAuswahlProKategorie[kategorie] = AUSWAHL_LEER;
+                besitzerState.farbKnopfProKategorie[kategorie] = null;
+
+                if (kategorie === "umriss") {
+                    const cats = ["umriss", "fenster", "tuer", "fassade", "garten"];
+                    cats.forEach(cat => {
+                        besitzerState.formAuswahlProKategorie[cat] = null;
+                        besitzerState.farbAuswahlProKategorie[cat] = AUSWAHL_LEER;
+                        besitzerState.farbKnopfProKategorie[cat] = null;
+                    });
+
+                    alert(`${gansNamen[besitzerIndex]} hat den Umriss verloren – alle Teile dieses Hauses wurden entfernt!`);
+                }
+            }
         } else {
             istDoppelklick("form", null);
         }
 
         formAuswahlProKategorie[kategorie] = formIndex;
-        farbAuswahlProKategorie[kategorie] = AUSWAHL_LEER;
-        farbKnopfProKategorie[kategorie] = null;
-
+        
         zeichneHaus();
 
         console.log("Form gewählt:", formIndex, "Kategorie:", kategorie, " (vergeben:", istVergeben, ")");
@@ -778,6 +932,14 @@ auswahlfeldFarben.forEach((feld, i) => {
                 console.log("Diese Farbe ist in dieser Kategorie schon in einem anderen Haus vergeben. Doppelklick zum Übernehmen.");
                 return;
             }
+
+            const besitzerIndex = findeFarbBesitzer(seitenKategorie, farbKonstante);
+            if (besitzerIndex !== null) {
+                const besitzerState = hausZustaende[besitzerIndex];
+                besitzerState.farbAuswahlProKategorie[seitenKategorie] = AUSWAHL_LEER;
+                besitzerState.farbKnopfProKategorie[seitenKategorie] = null;
+                console.log(`Farbe von ${gansNamen[besitzerIndex]} in Kategorie ${seitenKategorie} gestohlen.`);
+            }
         } else {
             istDoppelklick("farbe", null);
         }
@@ -806,10 +968,134 @@ function wechsleHaus(schritt) {
 
     zeichneHaus();
     aktualisiereHausRahmen();
+    aktualisiereDialog();
 }
 
 bildschirmRechtsKnopf.addEventListener("click", () => wechsleHaus(1));
 bildschirmLinksKnopf.addEventListener("click", () => wechsleHaus(-1));
+
+
+// ---- DIALOG ----
+function aktualisiereDialog() {
+    const hausIndex = aktuellesHaus;
+    const seiten = raetselTexte[hausIndex];
+
+    if (!seiten || seiten.length === 0) {
+        dialogGansName.textContent = "";
+        dialogInhalt.textContent = "";
+        stopTypewriter();
+        return;
+    }
+
+    let index = dialogSeitenIndex[hausIndex];
+    if (index < 0) index = 0;
+    if (index >= seiten.length) index = seiten.length - 1;
+    dialogSeitenIndex[hausIndex] = index;
+
+    dialogGansName.textContent = `${gansNamen[hausIndex]} - ${index + 1}/${seiten.length}`;
+
+    const text = seiten[index];
+    starteTypewriter(text);
+
+    
+    if (index === 0) {
+        dialogLinksKnopf.style.visibility  = "hidden";
+        dialogRechtsKnopf.style.visibility = "visible";
+    } else if (index === seiten.length - 1) {
+        dialogLinksKnopf.style.visibility  = "visible";
+        dialogRechtsKnopf.style.visibility = "hidden";
+    } else {
+        dialogLinksKnopf.style.visibility  = "visible";
+        dialogRechtsKnopf.style.visibility = "visible";
+    }
+}
+
+dialogLinksKnopf.addEventListener("click", () => {
+    dialogSeitenIndex[aktuellesHaus]--;
+    aktualisiereDialog();
+});
+
+dialogRechtsKnopf.addEventListener("click", () => {
+    dialogSeitenIndex[aktuellesHaus]++;
+    aktualisiereDialog();
+});
+
+// Schreibmaschinen-Effekt
+function stopTypewriter() {
+    if (dialogTimer !== null) {
+        clearInterval(dialogTimer);
+        dialogTimer = null;
+    }
+}
+
+function starteTypewriter(text) {
+    stopTypewriter();
+    aktuellerDialogText = text;
+    aktuellerDialogIndex = 0;
+    dialogInhalt.textContent = "";
+
+    dialogTimer = setInterval(() => {
+        if (aktuellerDialogIndex >= aktuellerDialogText.length) {
+            stopTypewriter();
+            return;
+        }
+
+        const char = aktuellerDialogText.charAt(aktuellerDialogIndex);
+        dialogInhalt.textContent += char;
+        aktuellerDialogIndex++;
+
+        dialogInhalt.scrollTop = dialogInhalt.scrollHeight;
+
+        // Sound einfügen
+        /*if (char !== " " && char !== "\n") {
+            playTypeSound();
+        }*/
+    }, 
+    25);
+}
+
+// --- PRÜFUNG DER LÖSUNG ---
+function pruefeLoesung() {
+    const kategorien = ["umriss", "fenster", "tuer", "fassade", "garten"];
+
+    let gesamtPunkte = 0;
+    let maxPunkte = 0;
+
+    for (let hausIndex = 0; hausIndex < hausZustaende.length; hausIndex++) {
+        const aktuellesHausState = hausZustaende[hausIndex];
+        const zielHausState      = loesungZustaende[hausIndex];
+
+        for (const kat of kategorien) {
+            maxPunkte += 2;
+            const aktuelleForm = aktuellesHausState.formAuswahlProKategorie[kat];
+            const aktuelleFarbe = aktuellesHausState.farbAuswahlProKategorie[kat];
+
+            const zielForm = zielHausState.formAuswahlProKategorie[kat];
+            const zielFarbe = zielHausState.farbAuswahlProKategorie[kat];
+
+            if (aktuelleForm === zielForm) {
+                gesamtPunkte++;
+            }
+            if (aktuelleFarbe === zielFarbe) {
+                gesamtPunkte++;
+            }
+        }
+    }
+
+    const prozent = Math.round((gesamtPunkte / maxPunkte) * 100);
+
+    // Einfaches Feedback – später durch coolen Screen ersetzen
+    if (prozent === 100) {
+        alert("Perfekt! 100% – du hast alle Häuser genau richtig rekonstruiert!");
+    } else if (prozent >= 70) {
+        alert(`Nice! ${prozent}% – ziemlich gut, aber noch nicht alles korrekt.`);
+    } else if (prozent >= 40) {
+        alert(`Du hast ${prozent}% – einige Hinweise hast du gelöst, der Rest ist noch Chaos.`);
+    } else {
+        alert(`Nur ${prozent}%... die Gänse frieren noch. Versuch's nochmal!`);
+    }
+}
+
 
 // ---- TASTEN-ANZEIGE ----
 const eingabeZuAnzeige = {
@@ -838,3 +1124,5 @@ document.addEventListener("keyup", (event) => {
     const el = eingabeZuAnzeige[event.key];
     if (el) el.style.display = "none";
 });
+
+abgebenKnopf.addEventListener("click", pruefeLoesung);
