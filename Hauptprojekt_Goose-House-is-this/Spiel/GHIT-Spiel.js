@@ -91,6 +91,14 @@ const rahmenFarben = [
 
 const gansNamen = ["BRÄNDA", "KEN", "TAV", "GOOSE"];
 
+const gansOffsets = [
+  { bottom: -25, left: 3.8, width: 21 }, //Brända
+  { bottom: -23.8, left: 3.0, width: 24 }, //Ken
+  { bottom: -22, left: 3.5, width: 25 }, //Tav
+  { bottom: -12, left: 4.0, width: 23 }, //Goose
+];
+
+
 //Dialog:
 const raetselTexte = [
     //BRÄNDA:
@@ -114,7 +122,7 @@ const raetselTexte = [
     //GOOSE:
     ["...",
      "...",
-     ".. . .",
+     ".. . ..",
      "...",
      "- .- ...- / -- .- --.  / .--. .. .-.. --.. . ",
      "𓆏"
@@ -141,7 +149,6 @@ const loesungZustaende = [
             garten:  AUSWAHL_LEER,
         }
     },
-
     // Haus Ken
     {
         formAuswahlProKategorie: {
@@ -159,7 +166,6 @@ const loesungZustaende = [
             garten:  AUSWAHL_LEER,
         }
     },
-
     // Haus Tav
     {
         formAuswahlProKategorie: {
@@ -177,7 +183,6 @@ const loesungZustaende = [
             garten:  AUSWAHL_LEER,
         }
     },
-
     // Haus Goose
     {
         formAuswahlProKategorie: {
@@ -196,6 +201,7 @@ const loesungZustaende = [
         }
     }
 ];
+
 // ---- BILDER ----
 // Auswahl-Formen:
 const auswahlFormenBilder = [
@@ -520,6 +526,8 @@ const dialogRechtsKnopf = document.getElementById("dialog-rechts-knopf");
 
 const abgebenKnopf = document.getElementById("abgeben-knopf");
 
+
+
 //Sound:
 const braendaStimme = new Audio("Sounds/type.wav");
 braendaStimme.volume = 0.3;
@@ -534,8 +542,212 @@ const gooseStimme = new Audio("Sounds/type.wav");
 gooseStimme.volume = 0.3;
 
 
+// --- Tastenlayout ---
+const layoutTasten = {
+    //Formenauswahl
+    "form-auswahl-1": {
+        element: auswahlfeldFormen[0],
+        links: null,
+        rechts: "form-auswahl-2",
+        oben: null,
+        unten: "form-auswahl-3",
+        enter: () => auswahlfeldFormen[0].click(),
+    },
+
+    "form-auswahl-2": {
+        element: auswahlfeldFormen[1],
+        links: "form-auswahl-1",
+        rechts: null,
+        oben: null,
+        unten: "form-auswahl-4",
+        enter: () => auswahlfeldFormen[1].click(),
+    },
+
+    "form-auswahl-3": {
+        element: auswahlfeldFormen[2],
+        links: "auswahl-pfeil-links",
+        rechts: "form-auswahl-4",
+        oben: "form-auswahl-1",
+        unten: "farb-auswahl-1",
+        enter: () => auswahlfeldFormen[2].click(),
+    },
+
+    "form-auswahl-4": {
+        element: auswahlfeldFormen[3],
+        links: "form-auswahl-3",
+        rechts: "auswahl-pfeil-rechts",
+        oben: "form-auswahl-2",
+        unten: "farb-auswahl-2",
+        enter: () => auswahlfeldFormen[3].click(),
+    },
+
+    //Farbauswahl
+    "farb-auswahl-1": {
+        element: auswahlfeldFarben[0],
+        links: "auswahl-pfeil-links",
+        rechts: "farb-auswahl-2",
+        oben: "form-auswahl-3",
+        unten: "farb-auswahl-3",
+        enter: () => auswahlfeldFarben[0].click(),
+    },
+
+    "farb-auswahl-2": {
+        element: auswahlfeldFarben[1],
+        links: "farb-auswahl-1",
+        rechts: "auswahl-pfeil-rechts",
+        oben: "form-auswahl-4",
+        unten: "farb-auswahl-4",
+        enter: () => auswahlfeldFarben[1].click(),
+    },
+
+    "farb-auswahl-3": {
+        element: auswahlfeldFarben[2],
+        links: null,
+        rechts: "farb-auswahl-4",
+        oben: "farb-auswahl-1",
+        unten: null,
+        enter: () => auswahlfeldFarben[2].click(),
+    },
+
+    "farb-auswahl-4": {
+        element: auswahlfeldFarben[3],
+        links: "farb-auswahl-3",
+        rechts: null,
+        oben: "farb-auswahl-2",
+        unten: null,
+        enter: () => auswahlfeldFarben[3].click(),
+    },
+
+    //Auwahlpfeile
+    "auswahl-pfeil-links": {
+        element: auswahlLinksKnopf,
+        links: "bildschirm-pfeil-rechts",
+        rechts: "auswahl-pfeil-rechts",
+        oben: "form-auswahl-3",
+        unten: "farb-auswahl-1",
+        enter: () => auswahlLinksKnopf.click(),
+    },
+
+    "auswahl-pfeil-rechts": {
+        element: auswahlRechtsKnopf,
+        links: "auswahl-pfeil-links",
+        rechts: "bildschirm-pfeil-links",
+        oben: "form-auswahl-4",
+        unten: "farb-auswahl-2",
+        enter: () => auswahlRechtsKnopf.click(),
+    },
+
+    //Bildschirmpfeile
+    "bildschirm-pfeil-links": {
+        element: bildschirmLinksKnopf,
+        links: "auswahl-pfeil-rechts",
+        rechts: "bildschirm-pfeil-rechts",
+        oben: "dialog-pfeil-links",
+        unten: null,
+        enter: () => bildschirmLinksKnopf.click(),
+    },
+
+    "bildschirm-pfeil-rechts": {
+        element: bildschirmRechtsKnopf,
+        links: "bildschirm-pfeil-links",
+        rechts: "auswahl-pfeil-links",
+        oben: "abgeben-button",
+        unten: "hilfe-button",
+        enter: () => bildschirmRechtsKnopf.click(),
+    },
+
+    //Dialogpfeile
+    "dialog-pfeil-links": {
+        element: dialogLinksKnopf,
+        links: null,
+        rechts: "dialog-pfeil-rechts",
+        oben: null,
+        unten: "abgeben-button",
+        enter: () => dialogLinksKnopf.click(),
+    },
+
+    "dialog-pfeil-rechts": {
+        element: dialogRechtsKnopf,
+        links: "dialog-pfeil-links",
+        rechts: null,
+        oben: null,
+        unten: "abgeben-button", //später: makier/merkbutton
+        enter: () => dialogRechtsKnopf.click(),
+    },
+
+    //Abgeben
+    "abgeben-button": {
+        element: abgebenKnopf,
+        links: null,
+        rechts: null,
+        oben: "dialog-pfeil-rechts",
+        unten: "bildschirm-pfeil-rechts",
+        enter: () => abgebenKnopf.click(),
+    },
+
+    //Hilfe/Einstellung
+    "hilfe-button": {
+        element: document.getElementById("hilfe"),
+        links: null,
+        rechts: null,
+        oben: "bildschirm-pfeil-rechts",
+        unten: "einstellung-button",
+        enter: () => document.getElementById("hilfe").click(),
+    },
+
+    "einstellung-button": {
+        element: document.getElementById("einstellung"),
+        links: null,
+        rechts: null,
+        oben: "hilfe-button",
+        unten: null,
+        enter: () => document.getElementById("einstellung").click(),
+    },
+
+    /* Muss ich ncoh hinzufügen, wenn ich das zeitlich schaffe
+
+    "undo-button": {
+        element: undoKnopf,
+        links: null,
+        rechts: null,
+        oben: null,
+        unten: null,
+        enter: () => undoAktion(),
+    },
+
+    "redo-button": {
+        element: redoKnopf,
+        links: null,
+        rechts: null,
+        oben: null,
+        unten: null,
+        enter: () => redoAktion(),
+    },
+
+    "haus-reset-button": {
+        element: hausResetKnopf,
+        links: null,
+        rechts: null,
+        oben: null,
+        unten: null,
+        enter: () => hausResetAktion(),
+    },
+
+    "raetsel-markieren-button": {
+        element: raetselMarkierenKnopf,
+        links: null,
+        rechts: null,
+        oben: null,
+        unten: null,
+        enter: () => raetselMarkierenAktion(),
+    },
+    */
+};
+
 
 // ---- HILFSFUNKTIONEN ----
+
+// ermittelt, zu welcher Kategorie (Umriss, Fenster, etc) ein Form-Index gehört
 function ermittleKategorie(formIndex) {
     const bereich = FORM_BEREICHE.find(
         (b) => formIndex >= b.min && formIndex <= b.max
@@ -543,7 +755,32 @@ function ermittleKategorie(formIndex) {
     return bereich ? bereich.kategorie : null;
 }
 
-// Schaut eine Form oder FArbe schon in einem anderen Haus benutzt wird
+//schaut welche Taste gerade ausgewählt ist
+let aktuellerFokus = "form-auswahl-1"; // bleibt so
+
+function setzeFokus(neuerKey) {
+    const alter = layoutTasten[aktuellerFokus];
+    if (alter && alter.element) {
+        alter.element.classList.remove("tastatur-fokus");
+    }
+
+    const neu = layoutTasten[neuerKey];
+    if (!neu || !neu.element) {
+        console.warn("Fokus-Ziel nicht gefunden:", neuerKey);
+        return;
+    }
+
+    neu.element.classList.add("tastatur-fokus");
+    aktuellerFokus = neuerKey;
+}
+
+
+if (layoutTasten[aktuellerFokus]) {
+    setzeFokus(aktuellerFokus);
+}
+
+
+//schaut ob eine Form schon in einem anderen Haus benutzt wird
 function formSchonVergeben(formIndex, kategorie) {
     for (let i = 0; i < hausZustaende.length; i++) {
         if (i === aktuellesHaus) continue;
@@ -556,6 +793,8 @@ function formSchonVergeben(formIndex, kategorie) {
     return false;
 }
 
+
+//schaut ob eine Farbe schon in einem anderen Haus benutzt wird
 function farbeSchonVergeben(kategorie, farbKonstante) {
     if (farbKonstante === AUSWAHL_LEER) return false;
 
@@ -595,6 +834,7 @@ function findeFarbBesitzer(kategorie, farbKonstante) {
     }
     return null;
 }
+
 // Schaut auf welcher Seite man ist
 function ermittleSeitenKategorie() {
     const formIndexAufSeite = aktuelleAuswahlFormen;
@@ -664,6 +904,44 @@ function istDoppelklick(typ, key) {
     }
 
     return false;
+}
+
+function mapKeyToAktion(key) {
+    switch (key) {
+        //Oben
+        case "ArrowUp":
+        case "w":
+        case "W":
+            return "up";
+
+        //Unten
+        case "ArrowDown":
+        case "s":
+        case "S":
+            return "down";
+
+        //Links
+        case "ArrowLeft":
+        case "a":
+        case "A":
+            return "left";
+
+        //Rechts
+        case "ArrowRight":
+        case "d":
+        case "D":
+            return "right";
+
+        //Enter
+        case "Enter":
+        case " ":
+        case "e":
+        case "E":
+            return "enter";
+
+        default:
+            return null;
+    }
 }
 
 // ---- AUSWAHLBEREICH ----
@@ -811,8 +1089,12 @@ function zeichneHaus() {
 
 //Gans einsetzen
 function aktualisiereGans() {
-    const gansAnzeigen = aktuellesHaus % gaenseBilder.length;
-    gansIcon.src = gaenseBilder[gansAnzeigen];
+    const i = aktuellesHaus % gaenseBilder.length;
+    gansIcon.src = gaenseBilder[i];
+
+    gansIcon.style.bottom = gansOffsets[i].bottom + "%";
+    gansIcon.style.left   = gansOffsets[i].left + "%";
+    gansIcon.style.width  = gansOffsets[i].width + "%"; 
 }
 
 function aktualisiereHausRahmen() {
@@ -889,7 +1171,7 @@ auswahlfeldFormen.forEach((feld, i) => {
         }
 
         formAuswahlProKategorie[kategorie] = formIndex;
-        
+
         zeichneHaus();
 
         console.log("Form gewählt:", formIndex, "Kategorie:", kategorie, " (vergeben:", istVergeben, ")");
@@ -1086,11 +1368,11 @@ function pruefeLoesung() {
 
     // Einfaches Feedback – später durch coolen Screen ersetzen
     if (prozent === 100) {
-        alert("Perfekt! 100% – du hast alle Häuser genau richtig rekonstruiert!");
+        alert("Perfekt! 100% - du hast alle Häuser genau richtig rekonstruiert!");
     } else if (prozent >= 70) {
-        alert(`Nice! ${prozent}% – ziemlich gut, aber noch nicht alles korrekt.`);
+        alert(`Nice! ${prozent}% - ziemlich gut, aber noch nicht alles korrekt.`);
     } else if (prozent >= 40) {
-        alert(`Du hast ${prozent}% – einige Hinweise hast du gelöst, der Rest ist noch Chaos.`);
+        alert(`Du hast ${prozent}% - einige Hinweise hast du gelöst, der Rest ist noch Chaos.`);
     } else {
         alert(`Nur ${prozent}%... die Gänse frieren noch. Versuch's nochmal!`);
     }
@@ -1116,13 +1398,45 @@ const eingabeZuAnzeige = {
 };
 
 document.addEventListener("keydown", (event) => {
-    const el = eingabeZuAnzeige[event.key];
-    if (el) el.style.display = "block";
+    const key = event.key;
+    const overlay = eingabeZuAnzeige[key];
+    if (overlay) overlay.style.display = "block";
+
+    const aktion = mapKeyToAktion(key);
+    if (!aktion) return;
+
+    event.preventDefault();
+
+    const knoten = layoutTasten[aktuellerFokus];
+    if (!knoten) {
+        console.warn("Kein Layout-Knoten für Fokus:", aktuellerFokus);
+        return;
+    }
+
+    if (aktion === "enter") {
+        if (typeof knoten.enter === "function") {
+            knoten.enter();
+        } else if (knoten.element) {
+            knoten.element.click();
+        }
+        return;
+    }
+
+    let zielKey = null;
+    if (aktion === "left")  zielKey = knoten.links;
+    if (aktion === "right") zielKey = knoten.rechts;
+    if (aktion === "up")    zielKey = knoten.oben;
+    if (aktion === "down")  zielKey = knoten.unten;
+
+    if (zielKey && layoutTasten[zielKey]) {
+        setzeFokus(zielKey);
+    }
 });
 
 document.addEventListener("keyup", (event) => {
-    const el = eingabeZuAnzeige[event.key];
-    if (el) el.style.display = "none";
+    const key = event.key;
+    const overlay = eingabeZuAnzeige[key];
+    if (overlay) overlay.style.display = "none";
 });
 
 abgebenKnopf.addEventListener("click", pruefeLoesung);

@@ -26,6 +26,7 @@ body {
   background-repeat: no-repeat;
   background-position: center;
   overflow: hidden;
+  font-size: calc(var(--hintergrund-groesse) * 0.012);
 }
 
 /* Anzeige: welche Knöpfe gedrückt werden */
@@ -85,7 +86,8 @@ body {
   height: 16.5%;
 }
 #hilfe:hover,
-#hilfe:focus-visible {
+#hilfe:focus-visible,
+#hilfe.tastatur-fokus {
   background-image: url("Bilder/Einstellung/Hilfe-gedrueckt.png");
 }
 
@@ -97,7 +99,8 @@ body {
   height: 16.5%;
 }
 #einstellung:hover,
-#einstellung:focus-visible {
+#einstellung:focus-visible,
+#einstellung.tastatur-fokus{
   background-image: url("Bilder/Einstellung/Einstellung-gedrueckt.png");
 }
 
@@ -106,7 +109,8 @@ body {
   background-image: url("Bilder/Pfeile/Pfeil-Links.png");
 }
 .pfeil-links:hover,
-.pfeil-links:focus-visible {
+.pfeil-links:focus-visible,
+.pfeil-links.tastatur-fokus {
   background-image: url("Bilder/Pfeile/Pfeil-Links-ausgewaehlt.png");
 }
 
@@ -114,7 +118,8 @@ body {
   background-image: url("Bilder/Pfeile/Pfeil-Rechts.png");
 }
 .pfeil-rechts:hover,
-.pfeil-rechts:focus-visible {
+.pfeil-rechts:focus-visible,
+.pfeil-rechts.tastatur-fokus{
   background-image: url("Bilder/Pfeile/Pfeil-Rechts-ausgewaehlt.png");
 }
 
@@ -158,7 +163,8 @@ body {
 }
 
 /* Eine Auswahl markiert (hover) */
-.auswahl-feld:hover .auswahl-markiert {
+.auswahl-feld:hover .auswahl-markiert,
+.auswahl-feld.tastatur-fokus .auswahl-markiert {
   opacity: 1;
 }
 
@@ -209,7 +215,7 @@ body {
 }
 
 .auswahl-feld.bereits-vergeben img {
-  opacity: 0.5;
+  opacity: 20;
 }
 
 /* ----- BILDSCHIRM ----- */
@@ -297,19 +303,15 @@ body {
 
 #text-feld .gans {
   position: absolute;
-  bottom: -12%;
-  left: 3.5%;
-  width: 20%;
   height: auto;
   pointer-events: none;
 }
 
 
-/*Dialog*/
-
+/* ---- Dialog ---- */
 #dialog {
   position: absolute;
-  left: 25%;
+  left: 30%;
   right: 10%;
   top: 20%;
   bottom: 10%;
@@ -324,7 +326,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 87%;
+  font-size: 0.9em; 
   margin-bottom: 4%;
 }
 
@@ -336,8 +338,8 @@ body {
 
 #dialog-inhalt {
   flex: 1;
-  font-size: 80%;
-  line-height: 130%;
+  font-size: 0.8em;   /* statt 80% */
+  line-height: 1.3em; /* passt dazu */
   overflow-y: auto;
   white-space: pre-wrap;
 }
