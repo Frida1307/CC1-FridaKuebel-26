@@ -1,6 +1,6 @@
 @font-face {
   font-family: "Titel";
-  src: url("Schriftart/funtasi-lear-trial/Funtasi/Lear/Trial.otf");
+  src: url("Schriftart/funtasi-lear-trial/Funtasi-Lear-Trial.otf");
 }
 
 body {
@@ -8,6 +8,10 @@ body {
   overflow: hidden;
   font-family: sans-serif;
   background: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
 #startseite {
@@ -30,40 +34,51 @@ body {
   z-index: -1;
 }
 
+
 #titel-bereich {
   position: absolute;
-  top: 7%; 
-  left: 45%;
+  top: 7%;
+  left: 50%;
   transform: translateX(-50%);
-  text-align: center;
+  width: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-/* Hintergrundbild vom Titel */
 #titel-hintergrund {
-  width: 150%;      /* skaliert mit der Gesamtfläche */
+  width: 100%;
   display: block;
-  margin: 0 auto;
 }
 
-/* Der eigentliche Titel-Text */
 #titel {
   position: absolute;
-  top: 50%;        /* relativ zum Titelbild */
-  left: 50%;
+  left: 48%;
+  top: 30%;
   transform: translate(-50%, -50%);
   font-family: "Titel", sans-serif;
-  font-size: 2em;  /* skaliert über font-size vom Wrapper mit */
-  color: white;
+  font-size: 2em;
+  color: rgb(24, 53, 5);
+  pointer-events: none;
 }
 
-/* Button innerhalb der 16:9-Fläche */
+
 #start-button {
   position: absolute;
-  top: 70%;         /* % der 16:9-Höhe */
+  top: 65%;
   left: 50%;
   transform: translateX(-50%);
-  padding: 0.5em 1.5em;
-  font-size: 1em;
+  width: 20%;
+  height: 20%;
+  background-image: url("Bilder/Enter.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  border: none;
   cursor: pointer;
-  z-index: 1;
+  background-color: transparent;
+  font-family: "Titel", sans-serif;
+  font-size: 1em;
+  color: rgba(94, 38, 16, 0.829);
 }
+

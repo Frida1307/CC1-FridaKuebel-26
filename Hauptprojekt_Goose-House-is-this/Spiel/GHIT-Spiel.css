@@ -338,8 +338,8 @@ body {
 
 #dialog-inhalt {
   flex: 1;
-  font-size: 0.8em;   /* statt 80% */
-  line-height: 1.3em; /* passt dazu */
+  font-size: 0.8em;
+  line-height: 1.3em;
   overflow-y: auto;
   white-space: pre-wrap;
 }
