@@ -18,12 +18,47 @@
             <source src="Ton/02-The-dew-settles.mp3" type="audio/mp3">
         </audio>
 
-        <div id="titel-bereich">       
+        <div id="titel-bereich" class="hidden">       
             <img id="titel-hintergrund" src="Bilder/Titelbild.png" alt="">
             <h1 id="titel">GOOSE <br> HOUSE <br> IS THIS</h1>
         </div> 
 
         <button id="start-button">ENTER</button>
     </div>
+
+    <div id="spiel-auswahl" class="hidden overlay-screen">
+        <button id="zurueck" class="zurueck" aria-label="Vorherige Auswahl"></button>
+        <div class="overlay-box">
+            <h2>Gemacht von: <br> Frida Kuebel <br>(Matrikelnummer: 289834)</h2>
+            <button id="story-btn" class="menu-btn">STORYMODE</button>
+            <button id="build-btn" class="menu-btn">BUILDMODE</button>
+            <button id="einstellung"></button>
+        </div>
+    </div>
+
+    <div id="einstellungs-menue" class="hidden overlay-screen">
+        <button id="settings-zurueck" class="zurueck" aria-label="Zurück"></button>
+        <div class="overlay-box">
+            <h2>Gemacht von: <br> Frida Kuebel <br>(Matrikelnummer: 289834)</h2>
+            <h1>Einstellungen</h1>
+
+            <!-- Audio -->
+            <div class="einstellungs-block">
+                <button id="ton-stumm" class="mute" aria-label="Ton stummschalten"></button>
+                <input id="lautstaerke" type="range" min="0" max="1" step="0.01">
+            </div>
+
+            <!-- Anderes -->
+            <button id="modi-button" class="einstellung-btn">MODI</button>
+            <button id="credits-button" class="einstellung-btn">CREDITS</button>
+            <button id="unterlagen-button" class="einstellung-btn">UNTERLAGEN</button>
+        </div>
+    </div>
+
+    <div class="overlay-box hidden" id="credits-screen">
+        <h1>CREDITS</h1>
+        <p>Text über Goose House, Team, Sound, etc…</p>
+    </div>
+    
 </body>
 </html>

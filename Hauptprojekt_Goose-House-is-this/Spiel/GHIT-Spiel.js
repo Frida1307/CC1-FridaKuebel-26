@@ -159,7 +159,7 @@ const loesungZustaende = [
             garten:  AUSWAHL_GARTEN_BUSCH,
         },
         farbAuswahlProKategorie: {
-            umriss:  AUSWAHL_ROT,
+            umriss:  AUSWAHL_BLAU,
             fenster: AUSWAHL_SCHWARZ,
             tuer:    AUSWAHL_SCHWARZ,
             fassade: AUSWAHL_SCHWARZ,
@@ -467,9 +467,6 @@ let formAuswahlProKategorie  = hausZustaende[0].formAuswahlProKategorie;
 let farbAuswahlProKategorie  = hausZustaende[0].farbAuswahlProKategorie;
 let farbKnopfProKategorie    = hausZustaende[0].farbKnopfProKategorie;
 
-let dialogTimer             = null;
-let aktuellerDialogText     = "";
-let aktuellerDialogIndex    = 0;
 
 // ---- VERLINKUNGEN AUS HTML ----
 // Formen und Farben
@@ -526,21 +523,30 @@ const dialogRechtsKnopf = document.getElementById("dialog-rechts-knopf");
 
 const abgebenKnopf = document.getElementById("abgeben-knopf");
 
+//Einstellungs-Overlay
+const einstellungButton = document.getElementById('einstellung');
+const settingsMenu      = document.getElementById('einstellungs-menue');
+const settingsBack      = document.getElementById('settings-zurueck');
 
+const lautstaerke       = document.getElementById('lautstaerke');
+const tonStumm          = document.getElementById('ton-stumm');
+
+const modiButton        = document.getElementById('modi-button');
+const creditsButton     = document.getElementById('credits-button');
+const creditsScreen     = document.getElementById('credits-screen');
+const creditsBack       = document.getElementById('credits-zurueck');
 
 //Sound:
-const braendaStimme = new Audio("Sounds/type.wav");
-braendaStimme.volume = 0.3;
+const stimmen = [
+    new Audio("Ton/braenda.wav"),
+    new Audio("Ton/ken.wav"),
+    new Audio("Ton/tav.wav"),
+    new Audio("Ton/goose.wav")
+];
 
-const kenStimme = new Audio("Sounds/type.wav");
-kenStimme.volume = 0.3;
-
-const tavStimme = new Audio("Sounds/type.wav");
-tavStimme.volume = 0.3;
-
-const gooseStimme = new Audio("Sounds/type.wav");
-gooseStimme.volume = 0.3;
-
+stimmen.forEach(sound => {
+    sound.volume = 0.3;
+});
 
 // --- Tastenlayout ---
 const layoutTasten = {
@@ -944,6 +950,56 @@ function mapKeyToAktion(key) {
     }
 }
 
+
+// ------ TEXT SYSTEM ------
+let aktiveTypeSounds = [];
+
+let typewriterTimer = null;
+let typewriterAktiv = false;
+
+let aktuellerDialogText = "";
+let aktuellerDialogIndex = 0;
+
+let soundCooldown = false;
+
+function aktuelleStimme() {
+    return stimmen[aktuellesHaus];
+}
+
+function playTypeSound() {
+    if (soundCooldown) return;
+
+    const base = aktuelleStimme();
+    if (!base) return;
+
+    soundCooldown = true;
+
+    const s = base.cloneNode();
+    s.volume = base.volume;
+    s.currentTime = 0;
+
+    aktiveTypeSounds.push(s);
+
+    s.play().catch(() => {});
+
+    s.addEventListener("ended", () => {
+        soundCooldown = false;
+        aktiveTypeSounds = aktiveTypeSounds.filter(x => x !== s);
+    });
+
+    setTimeout(() => {
+        soundCooldown = false;
+    }, 200);
+}
+
+function stopAlleTypeSounds() {
+    aktiveTypeSounds.forEach(s => {
+        s.pause();
+        s.currentTime = 0;
+    });
+    aktiveTypeSounds = [];
+    soundCooldown = false;
+}
 // ---- AUSWAHLBEREICH ----
 let aktuelleAuswahlFormen = 0;
 
@@ -1248,9 +1304,12 @@ function wechsleHaus(schritt) {
     farbAuswahlProKategorie  = hausZustaende[aktuellesHaus].farbAuswahlProKategorie;
     farbKnopfProKategorie    = hausZustaende[aktuellesHaus].farbKnopfProKategorie;
 
+    stopAlleTypeSounds();
+    stopTypewriter();
     zeichneHaus();
     aktualisiereHausRahmen();
     aktualisiereDialog();
+    
 }
 
 bildschirmRechtsKnopf.addEventListener("click", () => wechsleHaus(1));
@@ -1261,6 +1320,9 @@ bildschirmLinksKnopf.addEventListener("click", () => wechsleHaus(-1));
 function aktualisiereDialog() {
     const hausIndex = aktuellesHaus;
     const seiten = raetselTexte[hausIndex];
+
+    stopAlleTypeSounds();
+    stopTypewriter();
 
     if (!seiten || seiten.length === 0) {
         dialogGansName.textContent = "";
@@ -1304,36 +1366,61 @@ dialogRechtsKnopf.addEventListener("click", () => {
 
 // Schreibmaschinen-Effekt
 function stopTypewriter() {
-    if (dialogTimer !== null) {
-        clearInterval(dialogTimer);
-        dialogTimer = null;
+    typewriterAktiv = false;
+
+    if (typewriterTimer) {
+        clearTimeout(typewriterTimer);
+        typewriterTimer = null;
     }
 }
 
 function starteTypewriter(text) {
     stopTypewriter();
+
+    typewriterAktiv = true;
     aktuellerDialogText = text;
     aktuellerDialogIndex = 0;
+
     dialogInhalt.textContent = "";
 
-    dialogTimer = setInterval(() => {
-        if (aktuellerDialogIndex >= aktuellerDialogText.length) {
-            stopTypewriter();
-            return;
-        }
+    tick();
+}
 
-        const char = aktuellerDialogText.charAt(aktuellerDialogIndex);
-        dialogInhalt.textContent += char;
-        aktuellerDialogIndex++;
+function tick() {
+    if (!typewriterAktiv) return;
 
-        dialogInhalt.scrollTop = dialogInhalt.scrollHeight;
+    if (aktuellerDialogIndex >= aktuellerDialogText.length) {
+        typewriterAktiv = false;
+        return;
+    }
 
-        // Sound einfügen
-        /*if (char !== " " && char !== "\n") {
-            playTypeSound();
-        }*/
-    }, 
-    25);
+    const char = aktuellerDialogText.charAt(aktuellerDialogIndex);
+    dialogInhalt.textContent += char;
+    aktuellerDialogIndex++;
+
+    dialogInhalt.scrollTop = dialogInhalt.scrollHeight;
+
+    const vokale = "aeiouäöüAEIOUÄÖÜ";
+
+    if (vokale.includes(char)) {
+        playTypeSound();
+    }
+
+    let delay = 0;
+
+    const speeds = [85, 110, 95, 130];
+    delay = speeds[aktuellesHaus] || 90;
+
+    delay += Math.random() * 25 - 12;
+
+    if (char === ".") delay += 180;
+    if (char === ",") delay += 120;
+    if (char === "!") delay += 220;
+    if (char === "?") delay += 220;
+    if (char === ":") delay += 140;
+    if (char === ";") delay += 140;
+
+    typewriterTimer = setTimeout(tick, delay);
 }
 
 // --- PRÜFUNG DER LÖSUNG ---
@@ -1379,6 +1466,75 @@ function pruefeLoesung() {
 }
 
 
+//Einstellung: 
+function einstellungOeffnen() {
+    settingsMenu.classList.remove('hidden');
+}
+
+function einstellungSchliessen() {
+    settingsMenu.classList.add('hidden');
+    if (creditsScreen) creditsScreen.classList.add('hidden');
+}
+
+if (einstellungButton && settingsMenu) {
+    einstellungButton.addEventListener('click', einstellungOeffnen);
+}
+
+if (settingsBack) {
+    settingsBack.addEventListener('click', einstellungSchliessen);
+}
+
+if (modiButton) {
+    modiButton.addEventListener('click', () => {
+        einstellungSchliessen();
+    });
+}
+
+if (creditsButton && creditsScreen) {
+    creditsButton.addEventListener('click', () => {
+        settingsMenu.classList.add('hidden');
+        creditsScreen.classList.remove('hidden');
+    });
+}
+
+if (creditsBack && settingsMenu) {
+    creditsBack.addEventListener('click', () => {
+        creditsScreen.classList.add('hidden');
+        settingsMenu.classList.remove('hidden');
+    });
+}
+
+
+let globalVolume = 0.3;
+let globalMuted  = false;
+
+if (lautstaerke) {
+    lautstaerke.value = globalVolume;
+}
+if (tonStumm) {
+    tonStumm.classList.toggle('stumm', globalMuted);
+}
+
+if (lautstaerke) {
+    lautstaerke.addEventListener('input', () => {
+        globalVolume = parseFloat(lautstaerke.value);
+
+        stimmen.forEach(s => {
+            s.volume = globalMuted ? 0 : globalVolume;
+        });
+    });
+}
+
+if (tonStumm) {
+    tonStumm.addEventListener('click', () => {
+        globalMuted = !globalMuted;
+        tonStumm.classList.toggle('stumm', globalMuted);
+
+        stimmen.forEach(s => {
+            s.volume = globalMuted ? 0 : globalVolume;
+        });
+    });
+}
 // ---- TASTEN-ANZEIGE ----
 const eingabeZuAnzeige = {
     Enter: enterAnzeige,

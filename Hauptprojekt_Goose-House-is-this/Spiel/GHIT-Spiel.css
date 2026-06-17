@@ -2,6 +2,15 @@
   font-family: "Gaenseschrift";
   src: url("Schriftart/Schriftart-Raetsel.otf") format("truetype");
 }
+@font-face {
+  font-family: "Titel";
+  src: url("Schriftart/funtasi-lear-trial/Funtasi-Lear-Trial.otf");
+}
+@font-face {
+  font-family: "Kleiner-Text";
+  src: url("Schriftart/Market_Deco.ttf");
+}
+
 
 body {
   margin: 0;
@@ -361,4 +370,141 @@ body {
   font-family: "Gaenseschrift";
   color: #000000;
   pointer-events: auto;
+}
+
+
+
+.overlay-screen {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5); /* halbtransparentes Schwarz */
+  z-index: 10;
+}
+
+.overlay-box {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-image: url("Bilder/Einstellung/Overview/Overlay.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5%;
+}
+
+.hidden {
+  display: none;
+  pointer-events: none;
+}
+
+.menu-btn {
+  width: 25%;
+  padding: 2%;
+  font-size: 2em;
+  font-family: "Titel", sans-serif;
+  border: none;
+  border-radius: 25%;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.788);
+  color: rgb(24,53,5);
+  transition: transform 0.15s ease, 0.15s ease;
+}
+
+.menu-btn:hover,
+.menu-btn:focus{
+  transform: scale(1.03);
+  background: rgba(221, 106, 71, 0.733);
+}
+
+.menu-aktiv #titel-bereich {
+  display: none;
+}
+
+.menu-aktiv #start-button {
+  display: none;
+}
+
+h1 {
+  font-size: 3em;
+  font-family: "Kleiner-Text", sans-serif;
+}
+
+h2 {
+  font-size: 1em;
+  font-family: "Kleiner-Text", sans-serif;
+  text-align: center;
+}
+
+.zurueck {
+  position: absolute;
+  top: 5%;
+  left: 3%;
+  width: 5%;
+  height: 5%;
+  background-image: url("Bilder/Pfeile/Pfeil-Links.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  border: none;  
+  background-color: transparent;
+  cursor: pointer;
+  z-index: 200;
+}
+.zurueck:hover,
+.zurueck:focus-visible,
+.zurueck.tastatur-fokus {
+  background-image: url("Bilder/Pfeile/Pfeil-Links-ausgewaehlt.png");
+}
+
+button:focus-visible {
+  outline: none;
+}
+
+.einstellungs-block {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+#ton-stumm {
+  width: 50%;
+  height: 50%;
+  background-image: url("Bilder/Einstellung/Overview/Ton.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+#ton-stumm.stumm {
+  background-image: url("Bilder/Einstellung/Overview/Mute.png");
+}
+
+.einstellung-btn {
+  width: 8%;
+  padding: 1%;
+  gap: -10%;
+  font-size: 1.5em;
+  font-family: "Titel", sans-serif;
+  border: none;
+  border-radius: 100%;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.85);
+  color: rgb(24,53,5);
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.einstellung-btn:hover,
+.einstellung-btn:focus-visible {
+  transform: scale(1.03);
+  background: rgba(221, 106, 71, 0.8);
 }

@@ -8,6 +8,10 @@
     <title>Goose House is this?</title>
 </head>
 <body>
+    <audio id="startbildschirm-audio" autoplay loop>
+        <source src="Ton/13-There-is-a-hole-in-the-roof.mp3" type="audio/mp3">
+    </audio>
+
     <div class="positionierer">
         <div id="hintergrund">
 
@@ -114,7 +118,28 @@
                         <button id="abgeben-knopf">Abgeben</button>
                     </div>
                 </section>
-                
+                <div id="einstellungs-menue" class="hidden overlay-screen">
+                    <button id="settings-zurueck" class="zurueck" aria-label="Zurück"></button>
+                    <div class="overlay-box">
+                        <h2>Gemacht von: <br> Frida Kuebel <br>(Matrikelnummer: 289834)</h2>
+                        <h1>Einstellungen</h1>
+
+                        <!-- Audio -->
+                        <div class="einstellungs-block">
+                            <button id="ton-stumm" class="mute" aria-label="Ton stummschalten"></button>
+                            <input id="lautstaerke" type="range" min="0" max="1" step="0.01">
+                        </div>
+
+                        <!-- Anderes -->
+                        <button id="modi-button" class="einstellung-btn">MODI</button>
+                        <button id="credits-button" class="einstellung-btn">CREDITS</button>
+                        <button id="unterlagen-button" class="einstellung-btn">UNTERLAGEN</button>
+                    </div>
+                </div>
+
+                <div id="credits-screen" class="hidden">
+                    <button id="credits-zurueck">Zurück</button>
+                </div>    
             </main>
 
         </div>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Buildmode-design.css">
+    <script src="Buildmode-funktiom.js" defer></script>
+    <title>Goose House IS THIS - Buildmode</title>
+</head>
+
+<body>
+    <audio id="baumodus-audio" autoplay loop>
+        <source src="Ton/12-Without-a-care.mp3" type="audio/mp3">
+    </audio>
+
+<div class="positionierer">
+    <div id="hintergrund">
+        <!-- Anzeige: Welche Knöpfe werden gedrückt -->
+        <div class="uebersicht-knoepfe">
+            <div id="enter-gedrueckt"></div>
+            <div id="oben-gedrueckt"></div>
+            <div id="unten-gedrueckt"></div>
+            <div id="rechts-gedrueckt"></div>
+            <div id="links-gedrueckt"></div>
+        </div>
+
+        <button id="hilfe" class="einstellungs-knoepfe" aria-label="Hilfe"></button>
+        <button id="einstellung" class="einstellungs-knoepfe" aria-label="Einstellungen"></button>
+
+        <main id="hauptbereich">
+
+            <!-- Auswahlbereich -->
+            <section class="auswahl">
+
+                <div id="auswahl-formen">
+                    <div class="auswahl-feld">
+                        <img id="auswahl-formen-bild-1" alt="">
+                        <img class="auswahl-markiert" alt="">
+                        <img class="auswahl-ausgewaehlt" alt="">
+                    </div>
+
+                    <div class="auswahl-feld">
+                        <img id="auswahl-formen-bild-2" alt="">
+                        <img class="auswahl-markiert" alt="">
+                        <img class="auswahl-ausgewaehlt" alt="">
+                    </div>
+
+                    <div class="auswahl-feld">
+                        <img id="auswahl-formen-bild-3" alt="">
+                        <img class="auswahl-markiert" alt="">
+                        <img class="auswahl-ausgewaehlt" alt="">
+                    </div>
+
+                    <div class="auswahl-feld">
+                        <img id="auswahl-formen-bild-4" alt="">
+                        <img class="auswahl-markiert" alt="">
+                        <img class="auswahl-ausgewaehlt" alt="">
+                    </div>
+                </div>
+
+                <div id="auswahl-farben">
+                    <div class="auswahl-feld">
+                        <img id="auswahl-farben-bild-1" alt="">
+                        <img class="auswahl-markiert" alt="">
+                        <img class="auswahl-ausgewaehlt" alt="">
+                    </div>
+
+                    <div class="auswahl-feld">
+                        <img id="auswahl-farben-bild-2" alt="">
+                        <img class="auswahl-markiert" alt="">
+                        <img class="auswahl-ausgewaehlt" alt="">
+                    </div>
+
+                    <div class="auswahl-feld">
+                        <img id="auswahl-farben-bild-3" alt="">
+                        <img class="auswahl-markiert" alt="">
+                        <img class="auswahl-ausgewaehlt" alt="">
+                    </div>
+
+                    <div class="auswahl-feld">
+                        <img id="auswahl-farben-bild-4" alt="">
+                        <img class="auswahl-markiert" alt="">
+                        <img class="auswahl-ausgewaehlt" alt="">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Auswahl Pfeile -->
+            <button id="auswahl-links-knopf" class="pfeil pfeil-links"></button>
+            <button id="auswahl-rechts-knopf" class="pfeil pfeil-rechts"></button>
+
+            <!-- Bildschirm  -->
+            <section id="bildschirm-positionierer">
+                <div id="bildschirm">
+
+                    <img id="bildschirm-hintergrund" alt="">
+
+                    <!-- Platzierbereich -->
+                    <div id="platzierbereich">
+                        <img id="layer-umriss" alt="">
+                        <img id="layer-fenster" alt="">
+                        <img id="layer-tuer" alt="">
+                        <img id="layer-fassade" alt="">
+                        <img id="layer-garten" alt="">
+                    </div>
+
+                </div>
+            </section>
+
+        </main>
+    </div>
+</div>
+</body>
+</html>
