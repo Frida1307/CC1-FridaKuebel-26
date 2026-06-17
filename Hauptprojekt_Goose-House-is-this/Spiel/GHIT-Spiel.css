@@ -205,10 +205,11 @@ body {
   inset: 0;
   box-sizing: border-box;
   pointer-events: none;
+  z-index: 2;
 }
 
 .auswahl-feld.vergeben-haus-0::after {
-  border-color: #961818;
+  border-color: #b91b1b;
 }
 
 .auswahl-feld.vergeben-haus-1::after {
@@ -224,7 +225,7 @@ body {
 }
 
 .auswahl-feld.bereits-vergeben img {
-  opacity: 20;
+  opacity: 80;
 }
 
 /* ----- BILDSCHIRM ----- */
@@ -326,7 +327,7 @@ body {
   bottom: 10%;
   display: flex;
   flex-direction: column;
-  font-family: "Gaenseschrift";
+  font-family: "Kleiner-Text";
   color: #000000;
   pointer-events: auto;
 }
@@ -360,6 +361,19 @@ body {
   height: 80%;
 }
 
+/*Markieren-Knopf*/
+#marker-knopf {
+  position: relative;
+  width: 10%;
+  height: 10%;
+  right: 32%;
+  top: 30%;
+  background-image: url("Bilder/Knoepfe/marker.png");
+  pointer-events: auto;
+}
+
+
+
 /*Abgabe-Knopf*/
 #abgeben-knopf {
   position: absolute;
@@ -373,11 +387,46 @@ body {
 }
 
 
+/*Un-do-Knopf*/
+#undo-knopf {
+  position: absolute;
+  width: 10%;
+  height: 10%;
+  right: 32%;
+  top: 30%;
+  background-image: url("Bilder/Knoepfe/undo.png");
+  pointer-events: auto;
+}
+
+
+/*Re-do-Knopf*/
+#redo-knopf {
+  position: absolute;
+  width: 10%;
+  height: 10%;
+  right: 32%;
+  top: 30%;
+  background-image: url("Bilder/Knoepfe/redo.png");
+  pointer-events: auto;
+}
+
+
+/*Reset-Knopf*/
+#reset-knopf {
+  position: absolute;
+  width: 10%;
+  height: 10%;
+  right: 32%;
+  top: 30%;
+  background-image: url("Bilder/Knoepfe/reset.png");
+  pointer-events: auto;
+}
+
 
 .overlay-screen {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5); /* halbtransparentes Schwarz */
+  background: rgba(0, 0, 0, 0.5);
   z-index: 10;
 }
 

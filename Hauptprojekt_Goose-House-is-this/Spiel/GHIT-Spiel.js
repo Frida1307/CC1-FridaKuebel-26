@@ -523,14 +523,22 @@ const dialogRechtsKnopf = document.getElementById("dialog-rechts-knopf");
 
 const abgebenKnopf = document.getElementById("abgeben-knopf");
 
+//Extra-Buttons
+const raetselMarkierenKnopf = document.getElementById('marker-knopf');
+const undoKnopf             = document.getElementById('undo-knopf');
+const redoKnopf             = document.getElementById('redo-knopf');
+const hausResetKnopf        = document.getElementById('reset-knopf');
+
 //Einstellungs-Overlay
 const einstellungButton = document.getElementById('einstellung');
 const settingsMenu      = document.getElementById('einstellungs-menue');
 const settingsBack      = document.getElementById('settings-zurueck');
 
+//ton
 const lautstaerke       = document.getElementById('lautstaerke');
 const tonStumm          = document.getElementById('ton-stumm');
 
+//credits
 const modiButton        = document.getElementById('modi-button');
 const creditsButton     = document.getElementById('credits-button');
 const creditsScreen     = document.getElementById('credits-screen');
@@ -710,8 +718,6 @@ const layoutTasten = {
         enter: () => document.getElementById("einstellung").click(),
     },
 
-    /* Muss ich ncoh hinzufügen, wenn ich das zeitlich schaffe
-
     "undo-button": {
         element: undoKnopf,
         links: null,
@@ -747,7 +753,6 @@ const layoutTasten = {
         unten: null,
         enter: () => raetselMarkierenAktion(),
     },
-    */
 };
 
 

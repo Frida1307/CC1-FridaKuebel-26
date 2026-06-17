@@ -7,6 +7,11 @@
   src: url("Schriftart/Market_Deco.ttf");
 }
 
+html{
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
 body {
   margin: 0;
   overflow: hidden;
@@ -19,13 +24,14 @@ body {
 }
 
 #startseite {
-  --start-groesse: max(100vw, 100vh * 16 / 9);
+  --start-groesse: min(100vw, 100vh * 16 / 8);
   position: relative;
   width: var(--start-groesse);
   aspect-ratio: 16 / 9;
   margin: 0 auto;
   overflow: hidden;
-  font-size: clamp(16px, calc(var(--start-groesse) * 0.02), 32px);
+
+  font-size: calc(var(--start-groesse) * 0.016);
 }
 
 
@@ -86,10 +92,17 @@ body {
   color: rgba(94, 38, 16, 0.829);
 }
 
-#start-button:hover {
-  transform: translateX(-50%) scale(1.05);
+@media (hover: hover) {
+  #start-button:hover {
+    transform: translateX(-50%) scale(1.05);
+  }
 }
 
+.overlay-screen,
+.overlay-box,
+.spiel-moeglichkeiten {
+  font-size: inherit;
+}
 
 .overlay-screen {
   position: absolute;
@@ -167,12 +180,12 @@ body {
 }
 
 h1 {
-  font-size: 3em;
+  font-size: 2rem;
   font-family: "Kleiner-Text", sans-serif;
 }
 
 h2 {
-  font-size: 1em;
+  font-size: 1rem;
   font-family: "Kleiner-Text", sans-serif;
   text-align: center;
 }
